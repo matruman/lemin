@@ -17,8 +17,9 @@ HEADER			= includes/
 CFLAGS			= -I $(HEADER)
 
 SRC				= src/main.c \
-				  src/setup.c \
-				  src/reader_checker.c \
+				  src/reader/setup.c \
+				  src/reader/rooms.c \
+				  src/reader/links.c \
 				  gnl/get_next_line.c
 
 OBJ = $(patsubst %.c,%.o,$(SRC))

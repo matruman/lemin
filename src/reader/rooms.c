@@ -10,24 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lemin.h"
+#include "../../includes/lemin.h"
 
-void			reader_words(t_main *main, char **line, int ch, char *flag)
+void			reader_words(t_main *main, char **line, int ch)
 {
 	if (ft_strstr(*line, "##start") && !main->reader->is_start)
 	{
-		*flag = 's';
 		main->reader->is_start = 1;
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
+		main->reader->start = ft_atoi(*line);
 		return ;
 	}
 	else if (ft_strstr(*line, "##end") && !main->reader->is_end)
 	{
-		*flag = 'e';
 		main->reader->is_end = 1;
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
+		main->reader->end = ft_atoi(*line);
 		return ;
 	}
 	die();
@@ -35,18 +35,29 @@ void			reader_words(t_main *main, char **line, int ch, char *flag)
 
 static	void	push_room(t_main *main, t_rd_r *new)
 {
+	t_rd_r	*tmp;
+
 	main->rooms += 1;
 	if (!main->reader->rooms)
 	{
 		main->reader->rooms = new;
-		main->reader->r_next = main->reader->rooms;
 		return ;
 	}
-	main->reader->r_next->next = new;
-	main->reader->r_next = new;
+	tmp = main->reader->rooms;
+	while (tmp->next)
+	{
+		if ((tmp->x == new->x && tmp->y == new->y)
+			|| tmp->number == new->number)
+			die();
+		tmp = tmp->next;
+	}
+	if ((tmp->x == new->x && tmp->y == new->y)
+		|| tmp->number == new->number)
+		die();
+	tmp->next = new;
 }
 
-int				reader_is_room(t_main *main, char *line, char flag)
+int				reader_is_room(t_main *main, char *line)
 {
 	t_rd_r	*new;
 	char	*tmp;
@@ -58,7 +69,6 @@ int				reader_is_room(t_main *main, char *line, char flag)
 	if (!(new = (t_rd_r*)malloc(sizeof(t_rd_r))))
 		die();
 	new->number = number;
-	new->flag = flag;
 	tmp += 1;
 	new->x = ft_atoi(tmp);
 	if (!(tmp = ft_strchr(tmp, ' ')))
@@ -70,35 +80,5 @@ int				reader_is_room(t_main *main, char *line, char flag)
 	new->y = ft_atoi(tmp);
 	new->next = NULL;
 	push_room(main, new);
-	return (1);
-}
-
-static	void	push_link(t_main *main, t_rd_l *new)
-{
-	main->links += 1;
-	if (!main->reader->links)
-	{
-		main->reader->links = new;
-		main->reader->l_next = main->reader->links;
-		return ;
-	}
-	main->reader->l_next->next = new;
-	main->reader->l_next = new;
-}
-
-int				reader_is_link(t_main *main, char *line)
-{
-	t_rd_l	*new;
-	char	*tmp;
-
-	if (!(new = (t_rd_l*)malloc(sizeof(t_rd_l))))
-		die();
-	new->first = ft_atoi(line);
-	if (!(tmp = ft_strchr(line, '-')))
-		return (0);
-	tmp += 1;
-	new->second = ft_atoi(tmp);
-	new->next = NULL;
-	push_link(main, new);
 	return (1);
 }

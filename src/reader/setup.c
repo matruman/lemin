@@ -10,16 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lemin.h"
+#include "../../includes/lemin.h"
+
+void			graph_init(t_main *main)
+{
+	t_graph	*graph;
+	t_info	**info;
+	size_t	i;
+
+	if (!(graph = (t_graph*)malloc(sizeof(t_graph))))
+		die();
+	if (!(graph->info = (t_info**)malloc(sizeof(t_info*) *
+		(main->rooms + 1))))
+		die();
+	i = 0;
+	while (i < main->rooms)
+	{
+		if (!(graph->info[i] = (t_info*)malloc(sizeof(t_info))))
+			die();
+		graph->info[i]->count = 0;
+		graph->info[i]->links = NULL;
+		i++;
+	}
+	graph->info[i] = NULL;
+	main->graph = graph;
+	main->reader->flag = 'Y';
+}
 
 void			reader_push(t_main *main, char **line, int ch)
 {
-	char	flag;
-
-	flag = 0;
 	if (*line[0] == '#')
-		reader_words(main, line, ch, &flag);
-	if (reader_is_room(main, *line, flag))
+		reader_words(main, line, ch);
+	if (reader_is_room(main, *line))
 		return ;
 	if (reader_is_link(main, *line))
 		return ;
@@ -39,8 +61,8 @@ void			*lm_init(int res, char *line)
 	main->rooms = 0;
 	main->links = 0;
 	main->reader->rooms = NULL;
-	main->reader->links = NULL;
 	main->reader->is_start = 0;
 	main->reader->is_end = 0;
+	main->reader->flag = 0;
 	return(main);
 }
