@@ -36,5 +36,6 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
+	printf("%d %d %d\n", main->graph->start->id, main->rooms, main->links);
 	return (0);
 }

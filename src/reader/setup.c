@@ -12,31 +12,6 @@
 
 #include "../../includes/lemin.h"
 
-// void			graph_init(t_main *main)
-// {
-// 	t_graph	*graph;
-// 	t_info	**info;
-// 	size_t	i;
-
-// 	if (!(graph = (t_graph*)malloc(sizeof(t_graph))))
-// 		die();
-// 	if (!(graph->info = (t_info**)malloc(sizeof(t_info*) *
-// 		(main->rooms + 1))))
-// 		die();
-// 	i = 0;
-// 	while (i < main->rooms)
-// 	{
-// 		if (!(graph->info[i] = (t_info*)malloc(sizeof(t_info))))
-// 			die();
-// 		graph->info[i]->count = 0;
-// 		graph->info[i]->links = NULL;
-// 		i++;
-// 	}
-// 	graph->info[i] = NULL;
-// 	main->graph = graph;
-// 	main->reader->flag = 'Y';
-// }
-
 void			reader(t_main *main, char **line, int ch)
 {
 	if (*line && *line[0] == '#')
@@ -49,13 +24,12 @@ void			reader(t_main *main, char **line, int ch)
 		reader_crtroom(main, ft_strsplit(*line, ' '), 0);
 		return ;
 	}
-	// if (ft_strchr(*line, '-'))
-	// 	printf("%s\n", "b");
-	// if (reader_is_room(main, *line))
-	// 	return ;
-	// if (reader_is_link(main, *line))
-	// 	return ;
-	// die();
+	if (ft_strchr(*line, '-'))
+	{
+		reader_crtlink(main, ft_strsplit(*line, '-'));
+		return ;
+	}
+	die();
 }
 
 void			*lm_init(int res, char *line)

@@ -61,14 +61,17 @@ void			reader_crtroom(t_main *main, char **items, char flag)
 {
 	t_node	*new;
 
-	if (lm_count(items) != 3)
+	if (!items || lm_count(items) != 3)
 		die();
 	if (!(new = (t_node*)malloc(sizeof(t_node))))
 		die();
+	if (!(new->linkbox = (t_rel*)malloc(sizeof(t_rel))))
+		die();
+	new->linkbox->count = 0;
+	new->linkbox->link = NULL;
 	new->name = ft_strdup(items[0]);
 	new->x = ft_atoi(items[1]);
 	new->y = ft_atoi(items[2]);
-	new->linkbox = NULL;
 	new->next = NULL;
 	if (flag == 'S')
 		main->graph->start = new;

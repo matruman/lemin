@@ -12,54 +12,71 @@
 
 #include "../../includes/lemin.h"
 
-static	void	push_links_norm(t_links *tmp, t_links *new)
+static	void	push_link_norm(t_node *parent, t_link *new)
 {
+	t_link	*tmp;
+
+	tmp = parent->linkbox->link;
 	while (tmp->next)
 	{
-		if (tmp->relation == new->relation)
+		if (tmp->node == new->node)
 			die();
 		tmp = tmp->next;
 	}
-	if (tmp->relation == new->relation)
+	if (tmp->node == new->node)
 		die();
-	tmp->next = new; 
+	tmp->next = new;
 }
 
-static	void	push_links(t_main *main, int where, int relation)
+static	void	push_link(t_main *main, t_node *parent,
+	t_node *href, int flag)
 {
-	t_links	*new;
+	t_link	*new;
 
-	if (!(new = (t_links*)malloc(sizeof(t_links))))
+	if (!(new = (t_link*)malloc(sizeof(t_link))))
 		die();
-	new->relation = relation;
 	new->is_true = 1;
+	new->directed = flag;
+	new->node = href;
 	new->next = NULL;
-	main->graph->info[where]->count += 1;
-	if (!main->graph->info[where]->links)
+	if (!parent->linkbox->link)
 	{
-		main->graph->info[where]->links = new;
+		parent->linkbox->link = new;
 		return ;
 	}
-	push_links_norm(main->graph->info[where]->links, new);
+	push_link_norm(parent, new);
 }
 
-int				reader_is_link(t_main *main, char *line)
+static	void	node_search(t_main *main, char *str1, char *str2)
 {
-	char	*tmp;
-	int		firts;
-	int		second;
+	t_node	*first;
+	t_node	*second;
+	t_node	*tmp;
 
-	if (!main->reader->flag)
-		graph_init(main);
-	firts = ft_atoi(line);
-	if (!(tmp = ft_strchr(line, '-')))
-		return (0);
-	tmp += 1;
-	second = ft_atoi(tmp);
-	if (second >= main->rooms || firts >= main->rooms)
+	tmp = main->graph->node;
+	first = NULL;
+	second = NULL;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->name, str1))
+			first = tmp;
+		if (!ft_strcmp(tmp->name, str2))
+			second = tmp;
+		tmp = tmp->next;
+	}
+	if (!first || !second)
 		die();
-	push_links(main, firts, second);
-	push_links(main, second, firts);
+	push_link(main, first, second, 1);
+	push_link(main, second, first, 0);
+	first->linkbox->count += 1;
+	second->linkbox->count += 1;
+}
+
+void			reader_crtlink(t_main *main, char **items)
+{
+	if (!items || lm_count(items) != 2)
+		die();
+	node_search(main, items[0], items[1]);
 	main->links += 2;
-	return (1);
+	cleaner_2_array(items, 2);
 }

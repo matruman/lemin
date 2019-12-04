@@ -57,12 +57,11 @@ typedef struct		s_graph
 
 void				*lm_init(int res, char *line);
 void				die();
-void				reader(t_main *main, char **line, int ch);
 
+void				reader(t_main *main, char **line, int ch);
 void				reader_words(t_main *main, char **line, int ch);
 void				reader_crtroom(t_main *main, char **items, char flag);
-int					reader_is_link(t_main *main, char *line);
-void				graph_init(t_main *main);
+void				reader_crtlink(t_main *main, char **items);
 
 int					lm_count(char **items);
 void				cleaner_2_array(char **array, int count);
