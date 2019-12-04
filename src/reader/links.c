@@ -32,6 +32,7 @@ static	void	push_links(t_main *main, int where, int relation)
 	if (!(new = (t_links*)malloc(sizeof(t_links))))
 		die();
 	new->relation = relation;
+	new->is_true = 1;
 	new->next = NULL;
 	main->graph->info[where]->count += 1;
 	if (!main->graph->info[where]->links)

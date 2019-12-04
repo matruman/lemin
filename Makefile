@@ -19,8 +19,11 @@ CFLAGS			= -I $(HEADER)
 SRC				= src/main.c \
 				  src/reader/setup.c \
 				  src/reader/rooms.c \
-				  src/reader/links.c \
+				  src/reader/tmp.c \
 				  gnl/get_next_line.c
+
+					#  src/reader/rooms.c \
+				#  src/reader/links.c \
 
 OBJ = $(patsubst %.c,%.o,$(SRC))
 

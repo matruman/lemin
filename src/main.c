@@ -33,9 +33,8 @@ int				main(void)
 	while (get_next_line(ch, &line) > 0)
 	{
 		if (!(line[0] == '#' && line[1] != '#'))
-			reader_push(main, &line, ch);
+			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	printf("%d %d %d\n", main->rooms, main->links, main->ants);
 	return (0);
 }

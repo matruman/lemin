@@ -12,40 +12,50 @@
 
 #include "../../includes/lemin.h"
 
-void			graph_init(t_main *main)
-{
-	t_graph	*graph;
-	t_info	**info;
-	size_t	i;
+// void			graph_init(t_main *main)
+// {
+// 	t_graph	*graph;
+// 	t_info	**info;
+// 	size_t	i;
 
-	if (!(graph = (t_graph*)malloc(sizeof(t_graph))))
-		die();
-	if (!(graph->info = (t_info**)malloc(sizeof(t_info*) *
-		(main->rooms + 1))))
-		die();
-	i = 0;
-	while (i < main->rooms)
+// 	if (!(graph = (t_graph*)malloc(sizeof(t_graph))))
+// 		die();
+// 	if (!(graph->info = (t_info**)malloc(sizeof(t_info*) *
+// 		(main->rooms + 1))))
+// 		die();
+// 	i = 0;
+// 	while (i < main->rooms)
+// 	{
+// 		if (!(graph->info[i] = (t_info*)malloc(sizeof(t_info))))
+// 			die();
+// 		graph->info[i]->count = 0;
+// 		graph->info[i]->links = NULL;
+// 		i++;
+// 	}
+// 	graph->info[i] = NULL;
+// 	main->graph = graph;
+// 	main->reader->flag = 'Y';
+// }
+
+void			reader(t_main *main, char **line, int ch)
+{
+	if (*line && *line[0] == '#')
 	{
-		if (!(graph->info[i] = (t_info*)malloc(sizeof(t_info))))
-			die();
-		graph->info[i]->count = 0;
-		graph->info[i]->links = NULL;
-		i++;
-	}
-	graph->info[i] = NULL;
-	main->graph = graph;
-	main->reader->flag = 'Y';
-}
-
-void			reader_push(t_main *main, char **line, int ch)
-{
-	if (*line[0] == '#')
 		reader_words(main, line, ch);
-	if (reader_is_room(main, *line))
 		return ;
-	if (reader_is_link(main, *line))
+	}
+	if (ft_strchr(*line, ' '))
+	{
+		reader_crtroom(main, ft_strsplit(*line, ' '), 0);
 		return ;
-	die();
+	}
+	// if (ft_strchr(*line, '-'))
+	// 	printf("%s\n", "b");
+	// if (reader_is_room(main, *line))
+	// 	return ;
+	// if (reader_is_link(main, *line))
+	// 	return ;
+	// die();
 }
 
 void			*lm_init(int res, char *line)
@@ -56,13 +66,12 @@ void			*lm_init(int res, char *line)
 		return (NULL);
 	if ((main->ants = ft_atoi(line)) < 1)
 		return (NULL);
-	if (!(main->reader = (t_read*)malloc(sizeof(t_read))))
+	if (!(main->graph = (t_graph*)malloc(sizeof(t_graph))))
 		return (NULL);
 	main->rooms = 0;
 	main->links = 0;
-	main->reader->rooms = NULL;
-	main->reader->is_start = 0;
-	main->reader->is_end = 0;
-	main->reader->flag = 0;
+	main->graph->node = NULL;
+	main->graph->start = NULL;
+	main->graph->end = NULL;
 	return(main);
 }

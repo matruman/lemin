@@ -14,71 +14,66 @@
 
 void			reader_words(t_main *main, char **line, int ch)
 {
-	if (ft_strstr(*line, "##start") && !main->reader->is_start)
+	if (ft_strstr(*line, "##start") && !main->graph->start)
 	{
-		main->reader->is_start = 1;
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
-		main->reader->start = ft_atoi(*line);
+		reader_crtroom(main, ft_strsplit(*line, ' '), 'S');
 		return ;
 	}
-	else if (ft_strstr(*line, "##end") && !main->reader->is_end)
+	else if (ft_strstr(*line, "##end") && !main->graph->end)
 	{
-		main->reader->is_end = 1;
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
-		main->reader->end = ft_atoi(*line);
+		reader_crtroom(main, ft_strsplit(*line, ' '), 'E');
 		return ;
 	}
 	die();
 }
 
-static	void	push_room(t_main *main, t_rd_r *new)
+static	void	push_room(t_main *main, t_node *new)
 {
-	t_rd_r	*tmp;
+	t_node	*tmp;
 
 	main->rooms += 1;
-	if (!main->reader->rooms)
+	if (!main->graph->node)
 	{
-		main->reader->rooms = new;
+		new->id = 1;
+		main->graph->node = new;
 		return ;
 	}
-	tmp = main->reader->rooms;
+	tmp = main->graph->node;
 	while (tmp->next)
 	{
 		if ((tmp->x == new->x && tmp->y == new->y)
-			|| tmp->number == new->number)
+			|| !ft_strcmp(tmp->name, new->name))
 			die();
 		tmp = tmp->next;
 	}
 	if ((tmp->x == new->x && tmp->y == new->y)
-		|| tmp->number == new->number)
+		|| !ft_strcmp(tmp->name, new->name))
 		die();
+	new->id = tmp->id + 1;
 	tmp->next = new;
 }
 
-int				reader_is_room(t_main *main, char *line)
+void			reader_crtroom(t_main *main, char **items, char flag)
 {
-	t_rd_r	*new;
-	char	*tmp;
-	int		number;
+	t_node	*new;
 
-	number = ft_atoi(line);
-	if (!(tmp = ft_strchr(line, ' ')))
-		return (0);
-	if (!(new = (t_rd_r*)malloc(sizeof(t_rd_r))))
+	if (lm_count(items) != 3)
 		die();
-	new->number = number;
-	tmp += 1;
-	new->x = ft_atoi(tmp);
-	if (!(tmp = ft_strchr(tmp, ' ')))
-	{
-		ft_memdel((void**)&new);
-		return (0);
-	}
-	tmp += 1;
-	new->y = ft_atoi(tmp);
+	if (!(new = (t_node*)malloc(sizeof(t_node))))
+		die();
+	new->name = ft_strdup(items[0]);
+	new->x = ft_atoi(items[1]);
+	new->y = ft_atoi(items[2]);
+	new->linkbox = NULL;
 	new->next = NULL;
+	if (flag == 'S')
+		main->graph->start = new;
+	else if (flag == 'E')
+		main->graph->end = new;
 	push_room(main, new);
-	return (1);
+	cleaner_2_array(items, 3);
 }

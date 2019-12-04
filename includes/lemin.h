@@ -21,55 +21,50 @@ typedef struct		s_main
 	int				ants;
 	int				rooms;
 	int				links;
-	struct s_read	*reader;
 	struct s_graph	*graph;
 }					t_main;
 
-typedef struct		s_read
+typedef struct		s_link
 {
-	char			flag;
-	int				is_start;
-	int				is_end;
-	int				start;
-	int				end;
-	struct s_rd_r	*rooms;
-}					t_read;
+	char			is_true;
+	char			directed;
+	struct s_node	*node;
+	struct s_link	*next;
+}					t_link;
 
-typedef struct		s_rd_r
-{
-	int				number;
-	int				x;
-	int				y;
-	struct s_rd_r	*next;
-}					t_rd_r;
-
-typedef struct		s_links
-{
-	int				relation;
-	struct s_links	*next;
-}					t_links;
-
-
-
-
-typedef struct		s_info
+typedef struct		s_rel
 {
 	int				count;
-	struct s_links	*links;
-}					t_info;
+	struct s_link	*link;
+}					t_rel;
+
+typedef struct		s_node
+{
+	int				id;
+	char			*name;
+	int				x;
+	int				y;
+	struct s_rel	*linkbox;
+	struct s_node	*next;
+}					t_node;
 
 typedef struct		s_graph
 {
-	t_info			**info;
+	struct s_node	*start;
+	struct s_node	*end;
+	struct s_node	*node;
 }					t_graph;
 
 void				*lm_init(int res, char *line);
 void				die();
-void				reader_push(t_main *main, char **line, int ch);
+void				reader(t_main *main, char **line, int ch);
 
 void				reader_words(t_main *main, char **line, int ch);
-int					reader_is_room(t_main *main, char *line);
+void				reader_crtroom(t_main *main, char **items, char flag);
 int					reader_is_link(t_main *main, char *line);
 void				graph_init(t_main *main);
+
+int					lm_count(char **items);
+void				cleaner_2_array(char **array, int count);
 
 #endif
