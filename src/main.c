@@ -17,7 +17,7 @@ void			die()
 	ft_putstr("ERROR\n");
 	exit(1);	
 }
-
+void p(void) {printf("HELLO\n");}
 int				main(void)
 {
 	t_main	*main;
@@ -36,6 +36,6 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	printf("%d %d %d\n", main->graph->start->id, main->rooms, main->links);
+	dijkstra(main);
 	return (0);
 }

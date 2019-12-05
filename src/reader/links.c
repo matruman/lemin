@@ -19,12 +19,12 @@ static	void	push_link_norm(t_node *parent, t_link *new)
 	tmp = parent->linkbox->link;
 	while (tmp->next)
 	{
-		if (tmp->node == new->node)
-			die();
+		// if (tmp->node == new->node)
+		// 	die();
 		tmp = tmp->next;
 	}
-	if (tmp->node == new->node)
-		die();
+	// if (tmp->node == new->node)
+	// 	die();
 	tmp->next = new;
 }
 
@@ -37,6 +37,7 @@ static	void	push_link(t_main *main, t_node *parent,
 		die();
 	new->is_true = 1;
 	new->directed = flag;
+	new->llink = 1;
 	new->node = href;
 	new->next = NULL;
 	if (!parent->linkbox->link)

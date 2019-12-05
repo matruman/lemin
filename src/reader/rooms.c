@@ -69,6 +69,9 @@ void			reader_crtroom(t_main *main, char **items, char flag)
 		die();
 	new->linkbox->count = 0;
 	new->linkbox->link = NULL;
+	new->distance = MAXINT;
+	new->is_known = 0;
+	new->is_visit = 0;
 	new->name = ft_strdup(items[0]);
 	new->x = ft_atoi(items[1]);
 	new->y = ft_atoi(items[2]);

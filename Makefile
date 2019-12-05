@@ -21,6 +21,7 @@ SRC				= src/main.c \
 				  src/reader/rooms.c \
 				  src/reader/links.c \
 				  src/reader/tmp.c \
+				  src/dijkstra.c\
 				  gnl/get_next_line.c
 
 OBJ = $(patsubst %.c,%.o,$(SRC))
