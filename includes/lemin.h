@@ -26,6 +26,20 @@ typedef struct		s_main
 	struct s_graph	*graph;
 }					t_main;
 
+typedef struct 		s_path
+{
+	int				count;
+	t_node			*node;
+	struct s_path	*next;
+}					t_path;
+
+typedef struct 		s_paths
+{
+	int				count;
+	t_path			*path;
+	struct s_paths	*next;
+}					t_paths;
+
 typedef struct		s_link
 {
 	char			is_true;

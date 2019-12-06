@@ -80,7 +80,7 @@ static	void	run(t_main *main)
 		printf("%s\n", stack->node->name);
 		while (tmp)
 		{
-			if (!tmp->node->is_known)
+			if (!tmp->node->is_known) // is_true
 			{
 				push_to_start(main, tmp->node, min_int(tmp->llink +
 				stack->node->distance, tmp->node->distance));
@@ -95,6 +95,25 @@ static	void	run(t_main *main)
 		del_from_stack(main, stack);
 	}
 }
+
+/*
+t_path			*get_path(t_main *main)
+{
+	t_node		*node;
+	t_path		*path;
+	t_path		*path;
+
+	if (!(path = (t_path *)malloc(sizeof(t_path))))
+		die();
+	path->count = 0;
+	path->node = main->graph->end;
+	node = path->node;
+	while (node != main->graph->start)
+	{
+		path->node = node;
+	}
+}
+*/
 
 void			dijkstra(t_main *main)
 {
