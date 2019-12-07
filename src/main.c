@@ -12,6 +12,8 @@
 
 #include "../includes/lemin.h"
 
+void	display_graph(t_graph	*graph);
+
 void			die()
 {
 	ft_putstr("ERROR\n");
@@ -25,7 +27,7 @@ int				main(void)
 	int		ch;
 
 	line = NULL;
-	if ((ch = open("map.txt", O_RDONLY)) == -1)
+	if ((ch = open("map2.txt", O_RDONLY)) == -1)
 		die();
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();
@@ -36,6 +38,7 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	dijkstra(main);
+	while (dijkstra(main));
+	display_graph(main->graph);
 	return (0);
 }
