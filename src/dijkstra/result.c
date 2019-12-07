@@ -95,7 +95,7 @@ int				get_path(t_main *main)
 		write_items(&min, &needle, link, 0);
         while (link)
         {
-            if (min > link->node->distance && link->is_true >= 0)
+            if (min > link->node->distance && link->is_true <= 0)
                 write_items(&min, &needle, link, 1);
             link = link->next;
         }

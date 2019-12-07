@@ -38,7 +38,8 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	while (dijkstra(main));
+	while (dijkstra(main))
+		;
 	display_graph(main->graph);
 	return (0);
 }

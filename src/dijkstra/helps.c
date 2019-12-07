@@ -12,6 +12,20 @@
 
 #include "../../includes/lemin.h"
 
+void			clean_flags(t_main *main)
+{
+	t_node	*node;
+
+	node = main->graph->node;
+	while (node)
+	{
+		node->distance = MAXINT / 2;
+		node->is_known = 0;
+		node->is_visit = 0;
+		node = node->next;
+	}
+}
+
 void            reverse_link(t_node *node, t_link *link)
 {
 	t_link  *tmp;

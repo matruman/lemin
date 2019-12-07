@@ -36,7 +36,6 @@ static	void	push_link(t_main *main, t_node *parent,
 	if (!(new = (t_link*)malloc(sizeof(t_link))))
 		die();
 	new->is_true = 0;
-	new->directed = flag;
 	new->llink = 1;
 	new->node = href;
 	new->next = NULL;

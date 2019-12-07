@@ -30,7 +30,6 @@ typedef struct		s_main
 typedef struct		s_link
 {
 	char			is_true;
-	char			directed;
 	int				llink;
 	struct s_node	*node;
 	struct s_link	*next;
@@ -99,5 +98,6 @@ void				cleaner_2_array(char **array, int count);
 int					dijkstra(t_main *main);
 int					get_path(t_main *main);
 void				reverse_link(t_node *node, t_link *link);
+void				clean_flags(t_main *main);
 void p(void);
 #endif

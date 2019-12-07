@@ -110,7 +110,10 @@ int				dijkstra(t_main *main)
 	main->known = stack;
 	run(main);
 	if (!get_path(main))
+	{
+		clean_flags(main);
 		return (0);
+	}
 								// t_path	*tmp;
 								// tmp = main->paths->path;
 								// while (tmp)
@@ -118,5 +121,6 @@ int				dijkstra(t_main *main)
 								// 	printf("%s\n", tmp->node->name);
 								// 	tmp = tmp->next;
 								// }
+	clean_flags(main);
 	return (1);
 }
