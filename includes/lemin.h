@@ -24,21 +24,8 @@ typedef struct		s_main
 	int				links;
 	struct s_known	*known;
 	struct s_graph	*graph;
+	struct s_paths	*paths;
 }					t_main;
-
-typedef struct 		s_path
-{
-	int				count;
-	t_node			*node;
-	struct s_path	*next;
-}					t_path;
-
-typedef struct 		s_paths
-{
-	int				count;
-	t_path			*path;
-	struct s_paths	*next;
-}					t_paths;
 
 typedef struct		s_link
 {
@@ -83,6 +70,21 @@ typedef struct		s_known
 	struct s_known	*next;
 }					t_known;
 
+typedef struct 		s_path
+{
+	int				score;
+	t_node			*node;
+	struct s_path	*next;
+}					t_path;
+
+typedef struct 		s_paths
+{
+	int				s_len;
+	int				n_len;
+	t_path			*path;
+	struct s_paths	*next;
+}					t_paths;
+
 void				*lm_init(int res, char *line);
 void				die();
 
@@ -94,6 +96,8 @@ void				reader_crtlink(t_main *main, char **items);
 int					lm_count(char **items);
 void				cleaner_2_array(char **array, int count);
 
-void				dijkstra(t_main *main);
+int					dijkstra(t_main *main);
+int					get_path(t_main *main);
+void				reverse_link(t_node *node, t_link *link);
 void p(void);
 #endif

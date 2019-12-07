@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lemin.h"
+#include "../../includes/lemin.h"
 
 static	t_known		*min_stack(t_main *main)
 {
@@ -37,7 +37,7 @@ static	int		min_int(int first, int second)
 	return (first > second ? second : first);
 }
 
-void	del_from_stack(t_main *main, t_known	*elem)
+void	del_from_stack(t_main *main, t_known *elem)
 {
 	t_known		*prev;
 	t_known		*next;
@@ -77,16 +77,15 @@ static	void	run(t_main *main)
 	while ((stack = min_stack(main)))
 	{
 		tmp = stack->node->linkbox->link;
-		printf("%s\n", stack->node->name);
 		while (tmp)
 		{
-			if (!tmp->node->is_known) // is_true
+			if (tmp->is_true >= 0 && !tmp->node->is_known)
 			{
 				push_to_start(main, tmp->node, min_int(tmp->llink +
 				stack->node->distance, tmp->node->distance));
 				tmp->node->is_known = 1;
 			}
-			else if (!tmp->node->is_visit)
+			else if (tmp->is_true >= 0 && !tmp->node->is_visit)
 				tmp->node->distance = min_int(tmp->llink +
 				stack->node->distance, tmp->node->distance);
 			tmp = tmp->next;
@@ -96,26 +95,7 @@ static	void	run(t_main *main)
 	}
 }
 
-/*
-t_path			*get_path(t_main *main)
-{
-	t_node		*node;
-	t_path		*path;
-	t_path		*path;
-
-	if (!(path = (t_path *)malloc(sizeof(t_path))))
-		die();
-	path->count = 0;
-	path->node = main->graph->end;
-	node = path->node;
-	while (node != main->graph->start)
-	{
-		path->node = node;
-	}
-}
-*/
-
-void			dijkstra(t_main *main)
+int				dijkstra(t_main *main)
 {
 	t_known	*stack;
 
@@ -123,9 +103,20 @@ void			dijkstra(t_main *main)
 		die();
 	stack->node = main->graph->start;
 	stack->node->is_known = 1;
+	stack->node->distance = 0;
 	stack->node->is_visit = 1;
 	stack->prev = NULL;
 	stack->next = NULL;
 	main->known = stack;
 	run(main);
+	if (!get_path(main))
+		return (0);
+								// t_path	*tmp;
+								// tmp = main->paths->path;
+								// while (tmp)
+								// {
+								// 	printf("%s\n", tmp->node->name);
+								// 	tmp = tmp->next;
+								// }
+	return (1);
 }

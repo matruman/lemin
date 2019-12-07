@@ -47,5 +47,6 @@ void			*lm_init(int res, char *line)
 	main->graph->node = NULL;
 	main->graph->start = NULL;
 	main->graph->end = NULL;
+	main->paths = NULL;
 	return(main);
 }
