@@ -85,11 +85,11 @@ int				get_path(t_main *main)
     t_link  *link;
     int     min;
 	int		i;
-    
+
 	i = 0;
     crt_parent(main);
     node = main->graph->end;
-    while (node != main->graph->start && ++i)
+    while (node && ++i)
     {
         link = node->linkbox->link;
 		write_items(&min, &needle, link, 0);
@@ -99,9 +99,11 @@ int				get_path(t_main *main)
                 write_items(&min, &needle, link, 1);
             link = link->next;
         }
-        if (!needle || i >= main->rooms) //  вроде не ошибся
+        if (!needle || i > main->rooms)
 			return (cl_memory(main));
 		crt_path(main, node, needle);
+        if (node == main->graph->start)
+            return (1);
         node = needle->node;
     }
     return (1);

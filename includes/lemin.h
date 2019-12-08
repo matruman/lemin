@@ -50,6 +50,7 @@ typedef struct		s_node
 	int				distance;
 	int				is_known;
 	int				is_visit;
+	char			split;
 	struct s_rel	*linkbox;
 	struct s_node	*next;
 }					t_node;
@@ -99,5 +100,8 @@ int					dijkstra(t_main *main);
 int					get_path(t_main *main);
 void				reverse_link(t_node *node, t_link *link);
 void				clean_flags(t_main *main);
-void p(void);
+void				split_path(t_main *main);
+
+
+void p(void); void	display_graph(t_graph	*graph);
 #endif

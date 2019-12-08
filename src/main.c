@@ -12,8 +12,6 @@
 
 #include "../includes/lemin.h"
 
-void	display_graph(t_graph	*graph);
-
 void			die()
 {
 	ft_putstr("ERROR\n");
@@ -38,8 +36,8 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	while (dijkstra(main))
-		;
+//	while (dijkstra(main));
+	dijkstra(main);
 	display_graph(main->graph);
 	return (0);
 }

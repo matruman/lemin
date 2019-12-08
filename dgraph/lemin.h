@@ -99,5 +99,6 @@ void				cleaner_2_array(char **array, int count);
 int					dijkstra(t_main *main);
 int					get_path(t_main *main);
 void				reverse_link(t_node *node, t_link *link);
+void    	        split_path(t_main *main);
 void p(void);
 #endif

@@ -122,5 +122,17 @@ int				dijkstra(t_main *main)
 								// 	tmp = tmp->next;
 								// }
 	clean_flags(main);
+	split_path(main);
+    // t_node  *swap;
+    // t_node  *tmp;
+
+    // tmp = main->graph->node;
+    // while (tmp)
+    // {
+    //     printf("%s\n", tmp->name);
+    //     tmp = tmp->next;
+    // }
+//	exit(0);
+//	exit(0);
 	return (1);
 }
