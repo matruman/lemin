@@ -37,7 +37,9 @@ static	void	push_link(t_main *main, t_node *parent,
 		die();
 	new->is_true = 0;
 	new->llink = 1;
+	new->old = NULL;
 	new->node = href;
+	new->none = 0;
 	new->next = NULL;
 	if (!parent->linkbox->link)
 	{

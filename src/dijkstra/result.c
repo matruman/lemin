@@ -75,7 +75,8 @@ static  void    crt_path(t_main *main, t_node *node, t_link *need)
     path->score = need->llink;
     path->next = main->paths->path;
     main->paths->path = path;
-	reverse_link(node, need);
+    if (node != main->graph->start)
+	    reverse_link(node, need);
 }
 
 int				get_path(t_main *main)

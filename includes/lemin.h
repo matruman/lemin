@@ -30,7 +30,9 @@ typedef struct		s_main
 typedef struct		s_link
 {
 	char			is_true;
+	struct s_node	*old;
 	int				llink;
+	int				none;
 	struct s_node	*node;
 	struct s_link	*next;
 }					t_link;
