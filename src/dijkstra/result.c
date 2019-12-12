@@ -79,6 +79,22 @@ static  void    crt_path(t_main *main, t_node *node, t_link *need)
 	    reverse_link(node, need);
 }
 
+static  int     is_set(t_main *main, t_link *link)
+{
+    t_path  *path;
+
+    path = main->paths->path;
+    while (path)
+    {
+        if (path->node == link->node)
+        {
+            return (1);
+        }
+        path = path->next;
+    }
+    return (0);
+}
+
 int				get_path(t_main *main)
 {
     t_node  *node;
@@ -90,22 +106,31 @@ int				get_path(t_main *main)
 	i = 0;
     crt_parent(main);
     node = main->graph->end;
-    while (node && ++i)
+    while (node != main->graph->start && ++i)
     {
         link = node->linkbox->link;
 		write_items(&min, &needle, link, 0);
         while (link)
         {
-            if (min > link->node->distance && link->is_true <= 0)
+            if (min > link->node->distance && link->is_true <= 0 && !is_set(main, link))
+            {
+                printf("> %s%c <\n", link->node->name, link->node->split);
                 write_items(&min, &needle, link, 1);
+            }
             link = link->next;
         }
         if (!needle || i > main->rooms)
 			return (cl_memory(main));
 		crt_path(main, node, needle);
-        if (node == main->graph->start)
-            return (1);
         node = needle->node;
     }
+    crt_path(main, node, needle);
+	t_path *a1 = main->paths->path;
+
+	while (a1)
+	{
+		printf("%s%c  ", a1->node->name, a1->node->split);
+		a1 = a1->next;
+	}
     return (1);
 }

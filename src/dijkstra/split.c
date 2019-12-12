@@ -29,13 +29,13 @@ static	void	swap_link(t_node *sch, t_node *needle, t_node *swap, int f)
 	}
 }
 
-static	t_link	*crt_link(t_node *href)
+static	t_link	*crt_link(t_node *href, int is_true)
 {
 	t_link	*new;
 
 	if (!(new = (t_link*)malloc(sizeof(t_link))))
 		die();
-	new->is_true = 1;
+	new->is_true = is_true;
 	new->llink = 1;
 	new->old = NULL;
 	new->node = href;
@@ -52,7 +52,8 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	if (!(new->linkbox = (t_rel*)malloc(sizeof(t_rel))))
 		die();
 	new->linkbox->count = 0;
-	new->linkbox->link = crt_link(firts);
+	new->linkbox->link = crt_link(firts, 1);
+	new->linkbox->link->next = crt_link(parent, -1);
 	new->distance = MAXINT / 2;
 	new->is_known = 0;
 	new->is_visit = 0;
@@ -82,6 +83,18 @@ static	void	set_none(t_node *where, t_node *needle)
 	}
 }
 
+static	void	new_links(t_node *join, t_node *created)
+{
+	t_link	*new;
+
+	new = crt_link(created, 1);
+	new->next = join->linkbox->link;
+	join->linkbox->link = new;
+	new = crt_link(join, -1);
+	new->next = created->linkbox->link;
+	created->linkbox->link = new;
+}
+
 void            split_path(t_main *main)
 {
     t_path  *path;
@@ -94,6 +107,8 @@ void            split_path(t_main *main)
 		tmp = crt_node(path->next->node, path->node, main);
 		path->next->node->split = 'O';
 		swap_link(path->next->node, path->node, tmp, 1);
+		if (path->node->split == 'O')
+			swap_link(path->node, path->next->node, tmp, -1);
 		set_none(path->node, path->next->node);
 		main->graph->node = tmp;
 		change = path->next->node->linkbox->link;
@@ -102,7 +117,8 @@ void            split_path(t_main *main)
 			if (change->node != tmp && change->node != path->node
 				&& change->node != path->next->next->node)
 			{
-				swap_link(change->node, path->next->node, tmp, 1);
+				swap_link(change->node, path->next->node, path->next->node, -1);
+				new_links(change->node, tmp);
 				change->is_true = 1;
 			}
 			change = change->next;
@@ -124,9 +140,8 @@ void            split_path(t_main *main)
 			// 	printf("\n\n");
 			// 	a1 = a1->next;
 			// }
-			// display_graph(main->graph);
+		//	display_graph(main->graph);
 			// exit(0);
 		path = path->next;
-		
     }
 }
