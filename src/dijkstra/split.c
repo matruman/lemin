@@ -114,7 +114,7 @@ void            split_path(t_main *main)
 		change = path->next->node->linkbox->link;
 		while (change)
 		{
-			if (change->node != tmp && change->node != path->node
+			if (change->node != tmp && change->node != path->node && !change->is_true //----------------------------------------------------------
 				&& change->node != path->next->next->node)
 			{
 				swap_link(change->node, path->next->node, path->next->node, -1);

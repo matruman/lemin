@@ -36,10 +36,10 @@ int				main(void)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	while (dijkstra(main));
+	// while (dijkstra(main));
 
-	// dijkstra(main);
-	// dijkstra(main);
+	dijkstra(main);
+	dijkstra(main);
 		// t_node *a1;
 		// t_link *a2;
 
