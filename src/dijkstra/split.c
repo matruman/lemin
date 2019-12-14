@@ -24,6 +24,7 @@ static	void	swap_link(t_node *sch, t_node *needle, t_node *swap, int f)
 			tmp->old = tmp->node;
 			tmp->is_true = f;
 			tmp->node = swap;
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -53,6 +54,7 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 		die();
 	new->linkbox->count = 0;
 	new->linkbox->link = crt_link(firts, 1);
+	swap_link(firts, parent, new, -1);
 	new->linkbox->link->next = crt_link(parent, -1);
 	new->distance = MAXINT / 2;
 	new->is_known = 0;
@@ -67,22 +69,6 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	return (new);
 }
 
-static	void	set_none(t_node *where, t_node *needle)
-{
-	t_link	*tmp;
-
-	tmp = where->linkbox->link;
-	while (tmp)
-	{
-		if (tmp->node == needle)
-		{
-			tmp->none = 1;
-			return ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 static	void	new_links(t_node *join, t_node *created)
 {
 	t_link	*new;
@@ -95,6 +81,25 @@ static	void	new_links(t_node *join, t_node *created)
 	created->linkbox->link = new;
 }
 
+static	void	rechange_link(t_link *srh, t_node *from, t_node *into)
+{
+	t_link	*tmp;
+	t_link	*swap;
+
+	tmp = from->linkbox->link;
+	while (tmp)
+	{
+		if (tmp->next == srh)
+		{
+			swap = tmp->next;
+			tmp->next = tmp->next->next;
+			swap->next = into->linkbox->link;
+			into->linkbox->link = swap;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void            split_path(t_main *main)
 {
     t_path  *path;
@@ -104,27 +109,36 @@ void            split_path(t_main *main)
     path = main->paths->path;
     while (path->next->next)
     {
-		tmp = crt_node(path->next->node, path->node, main);
-		path->next->node->split = 'O';
-		swap_link(path->next->node, path->node, tmp, 1);
-		if (path->node->split == 'O')
-			swap_link(path->node, path->next->node, tmp, -1);
-		set_none(path->node, path->next->node);
-		main->graph->node = tmp;
-		change = path->next->node->linkbox->link;
-		while (change)
+		if (!path->next->node->split)
 		{
-			if (change->node != tmp && change->node != path->node && !change->is_true //----------------------------------------------------------
-				&& change->node != path->next->next->node)
+			tmp = crt_node(path->next->node, path->node, main);
+			path->next->node->split = 'O';
+			swap_link(path->next->node, path->node, tmp, 1);
+			if (path->node->split == 'O')
+				swap_link(path->node, path->next->node, tmp, -1);
+			main->graph->node = tmp;
+			change = path->next->node->linkbox->link;
+			while (change)
 			{
-				swap_link(change->node, path->next->node, path->next->node, -1);
-				new_links(change->node, tmp);
-				change->is_true = 1;
+				if (change->node != tmp && change->node != path->node //----------------------------------------------------------
+					&& change->node != path->next->next->node)
+				{
+					if (change->is_true == -1)
+					{
+						swap_link(change->node, path->next->node, tmp, 1);
+						rechange_link(change, path->next->node, tmp);
+					}
+					else if (!change->is_true)
+					{
+						swap_link(change->node, path->next->node, path->next->node, -1);
+						new_links(change->node, tmp);
+						change->is_true = 1;
+					}
+				}
+				change = change->next;
 			}
-			change = change->next;
 		}
-
-			// t_node *a1;
+					// t_node *a1;
 			// t_link *a2;
 
 			// a1 = main->graph->node;

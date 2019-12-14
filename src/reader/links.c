@@ -19,16 +19,16 @@ static	void	push_link_norm(t_node *parent, t_link *new)
 	tmp = parent->linkbox->link;
 	while (tmp->next)
 	{
-		// if (tmp->node == new->node)
-		// 	die();
+		if (tmp->node == new->node)
+			die();
 		tmp = tmp->next;
 	}
-	// if (tmp->node == new->node)
-	// 	die();
+	if (tmp->node == new->node)
+		die();
 	tmp->next = new;
 }
 
-static	void	push_link(t_main *main, t_node *parent,
+static	t_link	*push_link(t_main *main, t_node *parent,
 	t_node *href, int flag)
 {
 	t_link	*new;
@@ -44,9 +44,10 @@ static	void	push_link(t_main *main, t_node *parent,
 	if (!parent->linkbox->link)
 	{
 		parent->linkbox->link = new;
-		return ;
+		return (new);
 	}
 	push_link_norm(parent, new);
+	return (new);
 }
 
 static	void	node_search(t_main *main, char *str1, char *str2)
@@ -54,6 +55,7 @@ static	void	node_search(t_main *main, char *str1, char *str2)
 	t_node	*first;
 	t_node	*second;
 	t_node	*tmp;
+	t_link	*new;
 
 	tmp = main->graph->node;
 	first = NULL;
@@ -68,8 +70,9 @@ static	void	node_search(t_main *main, char *str1, char *str2)
 	}
 	if (!first || !second)
 		die();
-	push_link(main, first, second, 1);
-	push_link(main, second, first, 0);
+	new = push_link(main, first, second, 1);
+	new->relink = push_link(main, second, first, 0);
+	new->relink->relink = new;
 	first->linkbox->count += 1;
 	second->linkbox->count += 1;
 }

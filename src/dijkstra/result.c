@@ -113,10 +113,7 @@ int				get_path(t_main *main)
         while (link)
         {
             if (min > link->node->distance && link->is_true <= 0 && !is_set(main, link))
-            {
-                printf("> %s%c <\n", link->node->name, link->node->split);
                 write_items(&min, &needle, link, 1);
-            }
             link = link->next;
         }
         if (!needle || i > main->rooms)
@@ -125,12 +122,12 @@ int				get_path(t_main *main)
         node = needle->node;
     }
     crt_path(main, node, needle);
-	t_path *a1 = main->paths->path;
+	// t_path *a1 = main->paths->path;
 
-	while (a1)
-	{
-		printf("%s%c  ", a1->node->name, a1->node->split);
-		a1 = a1->next;
-	}
+	// while (a1)
+	// {
+	// 	printf("%s%c  ", a1->node->name, a1->node->split);
+	// 	a1 = a1->next;
+	// }
     return (1);
 }

@@ -31,6 +31,7 @@ typedef struct		s_link
 {
 	char			is_true;
 	struct s_node	*old;
+	struct s_link	*relink;
 	int				llink;
 	int				none;
 	struct s_node	*node;

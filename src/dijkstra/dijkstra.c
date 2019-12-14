@@ -123,37 +123,37 @@ int				dijkstra(t_main *main)
 								// 	tmp = tmp->next;
 								// }
 
-	// printf("\n\n");
+	printf("\n\n");
 
-	// t_path *a1 = main->paths->path;
+	t_path *a1 = main->paths->path;
 
-	// while (a1)
-	// {
-	// 	printf("%s%c  ", a1->node->name, a1->node->split);
-	// 	a1 = a1->next;
-	// }
+	while (a1)
+	{
+		printf("%s%c  ", a1->node->name, a1->node->split);
+		a1 = a1->next;
+	}
 
-	// printf("\n\n");
+	printf("\n\n");
 
 	clean_flags(main);
 	split_path(main);
 
-		t_node *a1;
-		t_link *a2;
+		// t_node *a1;
+		// t_link *a2;
 
-		a1 = main->graph->node;
-		while (a1)
-		{
-			printf("%s%c: ", a1->name, a1->split);
-			a2 = a1->linkbox->link;
-			while (a2)
-			{
-				printf(">%s%c %d< ", a2->node->name, a2->node->split, a2->is_true);
-				a2 = a2->next;
-			}
-			printf("\n\n");
-			a1 = a1->next;
-		}
+		// a1 = main->graph->node;
+		// while (a1)
+		// {
+		// 	printf("%s%c: ", a1->name, a1->split);
+		// 	a2 = a1->linkbox->link;
+		// 	while (a2)
+		// 	{
+		// 		printf(">%s%c %d< ", a2->node->name, a2->node->split, a2->is_true);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n\n");
+		// 	a1 = a1->next;
+		// }
 //	display_graph(main->graph);
 	// exit(0);
 //	exit(0);
