@@ -32,7 +32,7 @@ void	display_graph(t_graph	*graph)
 					d_line(mlx_ptr, win_ptr, node->x * size, node->y * size, link->node->x * size, link->node->y * size);
 				else if (link->is_true == -1)
 					d_line(mlx_ptr, win_ptr, link->node->x * size, link->node->y * size, node->x * size, node->y * size);
-				else
+				else if (link->is_true == 0)
 					line(mlx_ptr, win_ptr, node->x * size, node->y * size, link->node->x * size, link->node->y * size, 0xffffff);
 		//	}
 			link = link->next;

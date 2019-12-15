@@ -123,17 +123,17 @@ int				dijkstra(t_main *main)
 								// 	tmp = tmp->next;
 								// }
 
-	printf("\n\n");
+	// printf("\n\n");
 
-	t_path *a1 = main->paths->path;
+	// t_path *a1 = main->paths->path;
 
-	while (a1)
-	{
-		printf("%s%c  ", a1->node->name, a1->node->split);
-		a1 = a1->next;
-	}
+	// while (a1)
+	// {
+	// 	printf("%s%c  ", a1->node->name, a1->node->split);
+	// 	a1 = a1->next;
+	// }
 
-	printf("\n\n");
+	// printf("\n\n");
 
 	clean_flags(main);
 	split_path(main);

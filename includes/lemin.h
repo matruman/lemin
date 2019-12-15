@@ -34,6 +34,7 @@ typedef struct		s_link
 	struct s_link	*relink;
 	int				llink;
 	int				none;
+	int				used;
 	struct s_node	*node;
 	struct s_link	*next;
 }					t_link;
@@ -56,10 +57,12 @@ typedef struct		s_node
 	char			split;
 	struct s_rel	*linkbox;
 	struct s_node	*next;
+	struct s_node	*copy;
 }					t_node;
 
 typedef struct		s_graph
 {
+	struct s_paths	*paths;
 	struct s_node	*start;
 	struct s_node	*end;
 	struct s_node	*node;
@@ -104,6 +107,7 @@ int					get_path(t_main *main);
 void				reverse_link(t_node *node, t_link *link);
 void				clean_flags(t_main *main);
 void				split_path(t_main *main);
+t_graph				*merge_paths(t_main *main);
 
 
 void p(void); void	display_graph(t_graph	*graph);

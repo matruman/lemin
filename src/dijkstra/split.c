@@ -60,6 +60,7 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	new->is_known = 0;
 	new->is_visit = 0;
 	new->split = 'I';
+	new->id = parent->id;
 	new->name = parent->name;
 	new->x = parent->x - 10;
 	new->y = parent->y - 10;

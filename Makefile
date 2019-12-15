@@ -25,6 +25,7 @@ SRC				= src/main.c \
 				  src/dijkstra/result.c \
 				  src/dijkstra/helps.c \
 				  src/dijkstra/split.c \
+				  src/suurballe.c \
 				  gnl/get_next_line.c
 
 OBJ = $(patsubst %.c,%.o,$(SRC))

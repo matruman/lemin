@@ -25,7 +25,7 @@ int				main(void)
 	int		ch;
 
 	line = NULL;
-	if ((ch = open("map2 copy.txt", O_RDONLY)) == -1)
+	if ((ch = open("map2.txt", O_RDONLY)) == -1)
 		die();
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();
@@ -55,7 +55,7 @@ int				main(void)
 	// 	}
 	// exit(0);
 	dijkstra(main);
-	dijkstra(main);
+//	dijkstra(main);
 		t_node *a1;
 		t_link *a2;
 
@@ -73,5 +73,6 @@ int				main(void)
 			a1 = a1->next;
 		}
 	display_graph(main->graph);
+//	display_graph(merge_paths(main));
 	return (0);
 }

@@ -77,6 +77,7 @@ void			reader_crtroom(t_main *main, char **items, char flag)
 	new->x = ft_atoi(items[1]);
 	new->y = ft_atoi(items[2]);
 	new->next = NULL;
+	new->copy = NULL;
 	if (flag == 'S')
 		main->graph->start = new;
 	else if (flag == 'E')
