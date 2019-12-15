@@ -35,6 +35,7 @@ typedef struct		s_link
 	int				llink;
 	int				none;
 	int				used;
+	int				display;
 	struct s_node	*node;
 	struct s_link	*next;
 }					t_link;

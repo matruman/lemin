@@ -40,6 +40,7 @@ static	t_link	*crt_link(t_node *href, int is_true)
 	new->llink = 1;
 	new->old = NULL;
 	new->node = href;
+	new->display = 0;
 	new->next = NULL;
 	return (new);
 }

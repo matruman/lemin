@@ -38,6 +38,7 @@ static	t_link	*push_link(t_main *main, t_node *parent,
 	new->is_true = 0;
 	new->llink = 1;
 	new->old = NULL;
+	new->display = 0;
 	new->node = href;
 	new->none = 0;
 	new->next = NULL;

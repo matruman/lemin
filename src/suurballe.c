@@ -24,6 +24,7 @@ t_node		*copy_node(t_node *node)
 	new->distance = MAXINT / 2;
 	new->is_known = 0;
 	new->is_visit = 0;
+	new->split = node->split;
 	new->id = node->id;
 	new->name = node->name;
 	new->x = node->x;
@@ -36,6 +37,7 @@ void 	mark(t_main *main)
 {
 	t_path	*path;
 	t_paths	*paths;
+	t_link	*link;
 	
 	paths = main->paths;
 	while (paths)
@@ -43,6 +45,13 @@ void 	mark(t_main *main)
 		path = paths->path;
 		while (path)
 		{
+			if (path->node->split == 'I')
+			{
+				link = path->node->linkbox->link;
+				while (link->node->id != path->node->id && link->node->split == 'O')
+					link = link->next;
+				path->node = link->node;
+			}
 			if (!path->node->copy)
 				path->node->copy = copy_node(path->node);
 			path->node = path->node->copy;
@@ -68,7 +77,7 @@ void	linker(t_main *main)
 			link = path->node->linkbox->link;
 			while (link)
 			{
-				if (link->node == path->node->next)
+				if (link->node == path->next->node)
 					break ;
 				link = link->next;
 			}
@@ -78,12 +87,13 @@ void	linker(t_main *main)
 					die();
 				link->node = path->next->node;
 				link->llink = 1;
-				link->is_true = 1;
+				link->used = 0;
 				link->next = path->node->linkbox->link;
 				path->node->linkbox->link = link;
 				path->node->linkbox->count += 1;
 			}
-			link->used = 1;
+			link->is_true = 1;
+			link->used += 1;
 			relink = path->next->node->linkbox->link;
 			while (relink)
 			{
@@ -113,66 +123,102 @@ void	linker(t_main *main)
 
 void		tracer(t_graph *graph)
 {
-	t_node	*node = graph->node;
-	t_link	*here;
-	t_link	*there;
+	t_node *node;
+	t_link *link;
 
+	node = graph->node;
 	while (node)
 	{
-		if (node != graph->start && node->linkbox->count > 2)
+		link = node->linkbox->link;
+		while (link)
 		{
-			here = node->linkbox->link;
-			while (here)
+			if (link->is_true == 1 && link->relink->is_true == 1)
 			{
-				there = here->node->linkbox->link;
-				while (here->node->linkbox->count > 2 && there)
+				if (!(link->used - link->relink->used))
 				{
-					if (there->node == node && (here->used && there->used) && (there->is_true = -2)
-					&& (here->is_true = -2) && (here->node->linkbox->count--)
-					&& (there->node->linkbox->count--))
-						break;
-					there = there->next;
+					link->is_true = -2;
+					link->relink->is_true = -2;
 				}
-				here = here->next;
+				else
+					(link->used > link->relink->used) ?
+					(link->relink->is_true = -2) :
+					(link->is_true = -2);
 			}
+			link = link->next;
 		}
 		node = node->next;
 	}
 }
 
-void		unsplit_graph(t_graph *graph)
-{
-	t_node		*node;
-	t_node		*check;
-	t_link		*clink;
-	t_link		*nlink;
+// void		unsplit_graph(t_graph *graph)
+// {
+// 	t_node		*node;
+// 	t_node		*check;
+// 	t_link		*clink;
+// 	t_link		*nlink;
+// 	t_link		*n2link;
 
-	check = graph->node;
-	while (check->next)
-	{
-		node = check->next;
-		while (node)
-		{
-			printf("check: name = %s id = %d\n node: name = %s id = %d\n\n", check->name, check->id, node->name, node->id);
-			if (check->id == node->id)
-			{
-				clink = check->linkbox->link;
-				nlink = node->linkbox->link;
-				while (clink)
-				{
-					clink->relink->node = node;
-					clink = clink->next;
-				}
-				check->linkbox->link = NULL;
-				while (nlink->next)
-					nlink = nlink->next;
-				nlink->next = clink;
-			}
-			node = node->next;
-		}
-		check = check->next;
-	}
-}
+// 	check = graph->node;
+// 	while (check->next)
+// 	{
+// 		node = check->next;
+// 		while (node)
+// 		{
+// 			printf("check: name = %s id = %d\n node: name = %s id = %d\n\n", check->name, check->id, node->name, node->id);
+// 			if (check->id == node->id)
+// 			{
+// 				clink = check->linkbox->link;
+// 				nlink = node->linkbox->link;
+// 				while (clink)
+// 				{
+// 					n2link = node->linkbox->link;
+// 					while (n2link)
+// 					{
+// 						if (n2link->node == clink->node)
+// 						{
+
+// 							n2link->relink->is_true = -2;
+// 						}
+// 						n2link = n2link->next;
+// 					}
+// 					clink->relink->node = node;
+// 					clink = clink->next;
+// 				}	
+// 				while (nlink->next)
+// 					nlink = nlink->next;
+// 				nlink->next = check->linkbox->link;
+// 				check->linkbox->link = NULL;
+// 			}
+// 			node = node->next;
+// 		}
+// 		check = check->next;
+// 	}
+// }
+
+// void		unsplit_graph(t_graph *graph)
+// {
+// 	t_node		*node;
+// 	t_node		*check;
+
+// 	check = graph->node;
+// 	while (check->next)
+// 	{
+// 		node = check->next;
+// 		while (node)
+// 		{
+// 			printf("check: name = %s id = %d\n node: name = %s id = %d\n\n", check->name, check->id, node->name, node->id);
+// 			if (check->id == node->id)
+// 			{
+// 				if (check->split == 'I')
+// 					check->out = node;
+// 				else
+// 					node->out = check;
+// 			}
+// 			node = node->next;
+// 		}
+// 		check = check->next;
+// 	}
+// }
 
 t_graph		*merge_paths(t_main *main)
 {
@@ -185,6 +231,24 @@ p();
 	graph->node = NULL;
 	node = main->graph->node;
 	mark(main);
+
+		// t_paths *a1;
+		// t_path *a2;
+
+		// a1 = main->paths;
+		// while (a1)
+		// {
+		// 	printf("\n\n");
+		// 	a2 = a1->path;
+		// 	while (a2)
+		// 	{
+		// 		printf("%s-%c  ", a2->node->name, a2->node->split);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n\n");
+		// 	a1 = a1->next;
+		// }
+
 	graph->start = main->graph->start->copy;
 	graph->end = main->graph->end->copy;
 	while (node)
@@ -199,8 +263,24 @@ p();
 	}
 	linker(main);
 	printf("after linker\n");
-	unsplit_graph(graph);
-	printf("after us\n");
-	//tracer(graph);
+	tracer(graph);
+	// unsplit_graph(graph);
+		t_node *a1;
+		t_link *a2;
+
+		a1 = graph->node;
+		while (a1)
+		{
+			printf("%s%c: ", a1->name, a1->split);
+			a2 = a1->linkbox->link;
+			while (a2)
+			{
+				printf(">%s%c %d %d< ", a2->node->name, a2->node->split, a2->is_true, a2->used);
+				a2 = a2->next;
+			}
+			printf("\n\n");
+			a1 = a1->next;
+		}
+	// printf("after us\n");
 	return (graph);
 }
