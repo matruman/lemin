@@ -22,6 +22,7 @@ typedef struct		s_main
 	int				ants;
 	int				rooms;
 	int				links;
+	struct s_waybox	*waybox;
 	struct s_known	*known;
 	struct s_graph	*graph;
 	struct s_paths	*paths;
@@ -36,6 +37,7 @@ typedef struct		s_link
 	int				none;
 	int				used;
 	int				display;
+	int				coming;
 	struct s_node	*node;
 	struct s_link	*next;
 }					t_link;
@@ -77,6 +79,24 @@ typedef struct		s_known
 	struct s_known	*next;
 }					t_known;
 
+typedef struct		s_waybox
+{
+	struct s_way	***first;
+	struct s_way	***second;
+	int				f_score;
+	int				s_score;
+	int				f_count;
+	int				s_count;
+	t_node			*start;
+	int				from;
+}					t_waybox;
+
+typedef struct		s_way
+{
+	char			*name;
+	int				ant;
+}					t_way;
+
 typedef struct 		s_path
 {
 	int				score;
@@ -110,6 +130,10 @@ void				clean_flags(t_main *main);
 void				split_path(t_main *main);
 t_graph				*merge_paths(t_main *main);
 
+int					search_ways(t_main *main, t_graph *graph);
+void				free_way(t_way ***ways, int count);
+void        	    free_graph(t_graph *graph);
+void   				run_ants(t_main *main, int flag);
 
 void p(void); void	display_graph(t_graph	*graph);
 #endif

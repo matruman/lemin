@@ -30,14 +30,14 @@ static	void	swap_link(t_node *sch, t_node *needle, t_node *swap, int f)
 	}
 }
 
-static	t_link	*crt_link(t_node *href, int is_true)
+static	t_link	*crt_link(t_node *href, int is_true, int llink)
 {
 	t_link	*new;
 
 	if (!(new = (t_link*)malloc(sizeof(t_link))))
 		die();
 	new->is_true = is_true;
-	new->llink = 1;
+	new->llink = llink;
 	new->old = NULL;
 	new->node = href;
 	new->display = 0;
@@ -54,9 +54,9 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	if (!(new->linkbox = (t_rel*)malloc(sizeof(t_rel))))
 		die();
 	new->linkbox->count = 0;
-	new->linkbox->link = crt_link(firts, 1);
+	new->linkbox->link = crt_link(firts, 1, 0);
 	swap_link(firts, parent, new, -1);
-	new->linkbox->link->next = crt_link(parent, -1);
+	new->linkbox->link->next = crt_link(parent, -1, 0);
 	new->distance = MAXINT / 2;
 	new->is_known = 0;
 	new->is_visit = 0;
@@ -71,14 +71,14 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	return (new);
 }
 
-static	void	new_links(t_node *join, t_node *created)
+static	void	new_links(t_node *join, t_node *created, int llink)
 {
 	t_link	*new;
 
-	new = crt_link(created, 1);
+	new = crt_link(created, 1, llink);
 	new->next = join->linkbox->link;
 	join->linkbox->link = new;
-	new = crt_link(join, -1);
+	new = crt_link(join, -1, llink);
 	new->next = created->linkbox->link;
 	created->linkbox->link = new;
 }
@@ -133,7 +133,7 @@ void            split_path(t_main *main)
 					else if (!change->is_true)
 					{
 						swap_link(change->node, path->next->node, path->next->node, -1);
-						new_links(change->node, tmp);
+						new_links(change->node, tmp, change->llink);
 						change->is_true = 1;
 					}
 				}

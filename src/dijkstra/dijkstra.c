@@ -111,51 +111,10 @@ int				dijkstra(t_main *main)
 	run(main);
 	if (!get_path(main))
 	{
-		p();
 		clean_flags(main);
 		return (0);
 	}
-								// t_path	*tmp;
-								// tmp = main->paths->path;
-								// while (tmp)
-								// {
-								// 	printf("%s\n", tmp->node->name);
-								// 	tmp = tmp->next;
-								// }
-
-	// printf("\n\n");
-
-	// t_path *a1 = main->paths->path;
-
-	// while (a1)
-	// {
-	// 	printf("%s%c  ", a1->node->name, a1->node->split);
-	// 	a1 = a1->next;
-	// }
-
-	// printf("\n\n");
-
 	clean_flags(main);
 	split_path(main);
-
-		// t_node *a1;
-		// t_link *a2;
-
-		// a1 = main->graph->node;
-		// while (a1)
-		// {
-		// 	printf("%s%c: ", a1->name, a1->split);
-		// 	a2 = a1->linkbox->link;
-		// 	while (a2)
-		// 	{
-		// 		printf(">%s%c %d< ", a2->node->name, a2->node->split, a2->is_true);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n\n");
-		// 	a1 = a1->next;
-		// }
-//	display_graph(main->graph);
-	// exit(0);
-//	exit(0);
 	return (1);
 }

@@ -87,6 +87,7 @@ void	linker(t_main *main)
 					die();
 				link->node = path->next->node;
 				link->llink = 1;
+				link->coming = 0;
 				link->used = 0;
 				link->next = path->node->linkbox->link;
 				path->node->linkbox->link = link;
@@ -109,6 +110,7 @@ void	linker(t_main *main)
 				relink->llink = 1;
 				relink->is_true = -1;
 				relink->used = 0;
+				link->coming = 0;
 				relink->next = path->next->node->linkbox->link;
 				path->next->node->linkbox->link = relink;
 				path->next->node->linkbox->count += 1;
@@ -225,7 +227,6 @@ t_graph		*merge_paths(t_main *main)
 	t_graph		*graph;
 	t_node		*node;
 
-p();
 	if (!(graph = (t_graph *)malloc(sizeof(t_graph))))
 		die();
 	graph->node = NULL;
@@ -262,25 +263,23 @@ p();
 		node = node->next;
 	}
 	linker(main);
-	printf("after linker\n");
+	// printf("after linker\n");
 	tracer(graph);
-	// unsplit_graph(graph);
-		t_node *a1;
-		t_link *a2;
+		// t_node *a1;
+		// t_link *a2;
 
-		a1 = graph->node;
-		while (a1)
-		{
-			printf("%s%c: ", a1->name, a1->split);
-			a2 = a1->linkbox->link;
-			while (a2)
-			{
-				printf(">%s%c %d %d< ", a2->node->name, a2->node->split, a2->is_true, a2->used);
-				a2 = a2->next;
-			}
-			printf("\n\n");
-			a1 = a1->next;
-		}
-	// printf("after us\n");
+		// a1 = graph->node;
+		// while (a1)
+		// {
+		// 	printf("%s%c: ", a1->name, a1->split);
+		// 	a2 = a1->linkbox->link;
+		// 	while (a2)
+		// 	{
+		// 		printf(">%s%c %d %d< ", a2->node->name, a2->node->split, a2->is_true, a2->used);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n\n");
+		// 	a1 = a1->next;
+		// }
 	return (graph);
 }

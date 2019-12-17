@@ -42,11 +42,16 @@ void			*lm_init(int res, char *line)
 		return (NULL);
 	if (!(main->graph = (t_graph*)malloc(sizeof(t_graph))))
 		return (NULL);
+	if (!(main->waybox = (t_waybox*)malloc(sizeof(t_waybox))))
+		return (NULL);
 	main->rooms = 0;
 	main->links = 0;
 	main->graph->node = NULL;
 	main->graph->start = NULL;
 	main->graph->end = NULL;
 	main->paths = NULL;
+	main->waybox->from = 1;
+	main->waybox->first = NULL;
+	main->waybox->second = NULL;
 	return(main);
 }

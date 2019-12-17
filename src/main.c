@@ -23,9 +23,10 @@ int				main(void)
 	t_main	*main;
 	char	*line;
 	int		ch;
+	t_graph	*result;
 
 	line = NULL;
-	if ((ch = open("map2 copy.txt", O_RDONLY)) == -1)
+	if ((ch = open("map2.txt", O_RDONLY)) == -1)
 		die();
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();
@@ -56,23 +57,9 @@ int				main(void)
 	// exit(0);
 	dijkstra(main);
 	dijkstra(main);
-		// t_node *a1;
-		// t_link *a2;
-
-		// a1 = main->graph->node;
-		// while (a1)
-		// {
-		// 	printf("%s%c: ", a1->name, a1->split);
-		// 	a2 = a1->linkbox->link;
-		// 	while (a2)
-		// 	{
-		// 		printf(">%s%c %d< ", a2->node->name, a2->node->split, a2->is_true);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n\n");
-		// 	a1 = a1->next;
-		// }
-	//display_graph(main->graph);
-	display_graph(merge_paths(main));
+	result = merge_paths(main);
+	display_graph(result);
+	search_ways(main, result);
+	run_ants(main, 0);
 	return (0);
 }
