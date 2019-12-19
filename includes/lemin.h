@@ -88,7 +88,8 @@ typedef struct		s_waybox
 	int				f_count;
 	int				s_count;
 	t_node			*start;
-	int				from;
+	int				passed;
+	int				success;
 }					t_waybox;
 
 typedef struct		s_way

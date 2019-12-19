@@ -50,7 +50,8 @@ void			*lm_init(int res, char *line)
 	main->graph->start = NULL;
 	main->graph->end = NULL;
 	main->paths = NULL;
-	main->waybox->from = 1;
+	main->waybox->passed = 0;
+	main->waybox->success = 0;
 	main->waybox->first = NULL;
 	main->waybox->second = NULL;
 	return(main);

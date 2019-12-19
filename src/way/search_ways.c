@@ -151,7 +151,7 @@ int			search_ways(t_main *main, t_graph *graph)
 		++j;
 	}
 	way[j] = NULL;
-	free_graph(graph);
+//	free_graph(graph);
 	set_result(way, j, final, main);
 	return (j);
 }

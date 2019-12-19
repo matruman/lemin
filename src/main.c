@@ -11,19 +11,31 @@
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
-
+void p(void) {printf("HELLO\n");}
 void			die()
 {
 	ft_putstr("ERROR\n");
 	exit(1);	
 }
-void p(void) {printf("HELLO\n");}
+
+static	void	common(t_main *main)
+{
+	t_graph	*result;
+
+	if (!dijkstra(main))
+		die();// or return
+	dijkstra(main);
+	result = merge_paths(main);
+	search_ways(main, result);
+	run_ants(main, 0);
+	display_graph(result);
+}
+
 int				main(void)
 {
 	t_main	*main;
 	char	*line;
 	int		ch;
-	t_graph	*result;
 
 	line = NULL;
 	if ((ch = open("map2.txt", O_RDONLY)) == -1)
@@ -55,11 +67,6 @@ int				main(void)
 	// 		a1 = a1->next;
 	// 	}
 	// exit(0);
-	dijkstra(main);
-	dijkstra(main);
-	result = merge_paths(main);
-	display_graph(result);
-	search_ways(main, result);
-	run_ants(main, 0);
+	common(main);
 	return (0);
 }
