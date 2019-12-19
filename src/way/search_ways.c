@@ -106,14 +106,8 @@ static	void	set_result(t_way ***ways, int count, int score, t_main *main)
 		main->waybox->f_score = score;
 		return ;
 	}
-	if (!main->waybox->second)
-	{
-		main->waybox->second = ways;
-		main->waybox->s_count = count;
-		main->waybox->s_score = score;
-		return ;		
-	}
-	free_way(main->waybox->second, main->waybox->s_count);
+	if (main->waybox->second)
+		free_way(main->waybox->second, main->waybox->s_count);
 	main->waybox->second = main->waybox->first;
 	main->waybox->s_count = main->waybox->f_count;
 	main->waybox->s_score = main->waybox->f_score;
