@@ -26,6 +26,8 @@ typedef struct		s_main
 	struct s_known	*known;
 	struct s_graph	*graph;
 	struct s_paths	*paths;
+	struct s_paths	*copy_paths;
+	struct s_paths	*copy_last;
 }					t_main;
 
 typedef struct		s_link
@@ -110,6 +112,7 @@ typedef struct 		s_paths
 	int				s_len;
 	int				n_len;
 	t_path			*path;
+	t_path			*last;
 	struct s_paths	*next;
 }					t_paths;
 

@@ -39,7 +39,7 @@ void 	mark(t_main *main)
 	t_paths	*paths;
 	t_link	*link;
 	
-	paths = main->paths;
+	paths = main->copy_paths;
 	while (paths)
 	{
 		path = paths->path;
@@ -68,7 +68,7 @@ void	linker(t_main *main)
 	t_link	*link;
 	t_link	*relink;
 
-	paths = main->paths;
+	paths = main->copy_paths;
 	while (paths)
 	{
 		path = paths->path;
@@ -222,6 +222,67 @@ void		tracer(t_graph *graph)
 // 	}
 // }
 
+static	t_paths	*copy_paths(t_paths *paths, t_main *main)
+{
+    t_paths *parent;
+
+    if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
+        die();
+    parent->s_len = paths->s_len;
+    parent->n_len = paths->n_len;
+    parent->path = NULL;
+    parent->next = NULL;
+	parent->last = NULL;
+	if (!main->copy_paths)
+	{
+		main->copy_paths = parent;
+		main->copy_last = parent;
+		return (parent);
+	}
+	main->copy_last->next = parent;
+	main->copy_last = parent;
+	return (parent);
+}
+
+static	void	copy_path(t_path *path, t_paths *parent)
+{
+    t_path  *new;
+
+    if (!(new = (t_path*)malloc(sizeof(t_path))))
+        die();
+    new->node = path->node;
+    new->score = path->score;
+    new->next = NULL;
+    if (!parent->path)
+	{
+		parent->path = new;
+		parent->last = new;
+		return ;
+	}
+	parent->last->next = new;
+	parent->last = new;
+}
+
+void			cp_paths(t_main *main)
+{
+	t_paths	*paths;
+	t_paths	*c_paths;
+	t_path	*path;
+
+	paths = main->paths;
+	while (paths)
+	{
+		c_paths = copy_paths(paths, main);
+		path = paths->path;
+		while (path)
+		{
+			copy_path(path, c_paths);
+			path = path->next;
+		}
+		paths = paths->next;
+	}
+}
+
 t_graph		*merge_paths(t_main *main)
 {
 	t_graph		*graph;
@@ -231,19 +292,21 @@ t_graph		*merge_paths(t_main *main)
 		die();
 	graph->node = NULL;
 	node = main->graph->node;
+	main->copy_paths = NULL;
+	cp_paths(main);
 	mark(main);
-
+// <----------------------------------------------------------- FREEEEEEEEEEEEEE
 		// t_paths *a1;
 		// t_path *a2;
 
-		// a1 = main->paths;
+		// a1 = main->copy_paths;
 		// while (a1)
 		// {
 		// 	printf("\n\n");
 		// 	a2 = a1->path;
 		// 	while (a2)
 		// 	{
-		// 		printf("%s-%c  ", a2->node->name, a2->node->split);
+		// 		printf("%s-%c  \n", a2->node->name, a2->node->split);
 		// 		a2 = a2->next;
 		// 	}
 		// 	printf("\n\n");

@@ -18,27 +18,101 @@ void			die()
 	exit(1);	
 }
 
+static	int		calc(t_main *main)
+{
+	return (((main->waybox->f_score - 1) *
+			(main->waybox->f_count - 1)) < main->ants);
+}
+
+// static	void	common(t_main *main)
+// {
+// 	t_graph	*result;
+
+// 	if (!dijkstra(main))
+// 		return ;
+// 	if (!calc(main))
+// 		return (run_ants(main, 0));
+// 	while (dijkstra(main))
+// 	{
+// 		result = merge_paths(main);
+// 		search_ways(main, result);
+// 		if (!calc(main))
+// 			return (run_ants(main, 0));
+// 	}
+// 	run_ants(main, 1);
+// }
+
 static	void	common(t_main *main)
 {
 	t_graph	*result;
 
 	if (!dijkstra(main))
-		die();// or return
-	dijkstra(main);
-	result = merge_paths(main);
-	search_ways(main, result);
+		return ;
+	while (dijkstra(main))
+	{
+		result = merge_paths(main);
+
+		// t_node *a1;
+		// t_link *a2;
+
+		// a1 = result->node;
+		// while (a1)
+		// {
+		// 	printf("%s%c: ", a1->name, a1->split);
+		// 	a2 = a1->linkbox->link;
+		// 	while (a2)
+		// 	{
+		// 		printf(">%s %d< ", a2->node->name, a2->is_true);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n\n");
+		// 	a1 = a1->next;
+		// }
+		// display_graph(result);
+		// return ;
+		// display_graph(result);
+		// return ;
+		search_ways(main, result);
+		if (!calc(main))
+		{
+			ft_putstr("323232\n");
+			printf("%d %d %d\n", main->waybox->f_score, main->waybox->f_count, main->ants);
+			run_ants(main, 1);
+			display_graph(result);
+			return ;
+		}
+	}
+	ft_putstr("sdsd\n");
+	printf("%d %d %d\n", main->waybox->f_score, main->waybox->f_count, main->ants);
 	run_ants(main, 0);
+		// t_node *a1;
+		// t_link *a2;
+
+		// a1 = result->node;
+		// while (a1)
+		// {
+		// 	printf("%s%c: ", a1->name, a1->split);
+		// 	a2 = a1->linkbox->link;
+		// 	while (a2)
+		// 	{
+		// 		printf(">%s %d< ", a2->node->name, a2->is_true);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n\n");
+		// 	a1 = a1->next;
+		// }
 	display_graph(result);
 }
 
-int				main(void)
+
+int				main(int a, char **b)
 {
 	t_main	*main;
 	char	*line;
 	int		ch;
 
 	line = NULL;
-	if ((ch = open("map2.txt", O_RDONLY)) == -1)
+	if ((ch = open(b[1], O_RDONLY)) == -1)
 		die();
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();

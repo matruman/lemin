@@ -128,16 +128,16 @@ int			search_ways(t_main *main, t_graph *graph)
 
 	if (!(ways_len = ways_count(main, graph)))
 		return (0);
-	if (!(way = (t_way***)malloc((sizeof(void*) + ways_len) * sizeof(void*))))
+	if (!(way = (t_way***)malloc((1 + ways_len) * sizeof(void*))))
 		die();
 	j = 0;
 	final = 0;
 	while ((count = counter(graph, main)))
 	{
-		if (!(way[j] = (t_way**)malloc((sizeof(void*) + count) * sizeof(void*))))
+		if (!(way[j] = (t_way**)malloc((1 + count) * sizeof(void*))))
 			die();
 		i = 0;
-		final += count;
+		final = count > final ? count : final;
 		tmp = main->waybox->start;
 		while (i < count)
 			way[j][i++] = get_struct(&tmp);
@@ -145,6 +145,9 @@ int			search_ways(t_main *main, t_graph *graph)
 		++j;
 	}
 	way[j] = NULL;
+	// p();
+	// display_graph(graph);
+	// return (0);
 //	free_graph(graph);
 	set_result(way, j, final, main);
 	return (j);

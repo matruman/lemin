@@ -53,6 +53,7 @@ static  void    crt_parent(t_main *main)
     parent->n_len = 0;
     parent->path = NULL;
     parent->next = NULL;
+    parent->last = NULL;
     if (!main->paths)
     {
         main->paths = parent;

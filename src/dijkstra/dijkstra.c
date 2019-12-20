@@ -114,6 +114,32 @@ int				dijkstra(t_main *main)
 		clean_flags(main);
 		return (0);
 	}
+	if (!main->waybox->first)
+	{
+		search_ways(main, merge_paths(main));
+	// t_graph *aaa;
+	// 	aaa = merge_paths(main);
+	//	search_ways(main, aaa);
+	// 	t_node *a1;
+	// 	t_link *a2;
+
+	// 	a1 = aaa->node;
+	// 	while (a1)
+	// 	{
+	// 		printf("%s%c: ", a1->name, a1->split);
+	// 		a2 = a1->linkbox->link;
+	// 		while (a2)
+	// 		{
+	// 			printf(">%s %d< ", a2->node->name, a2->is_true);
+	// 			a2 = a2->next;
+	// 		}
+	// 		printf("\n\n");
+	// 		a1 = a1->next;
+	// // 	}
+	// 	display_graph(aaa);
+	// // 	return (0);
+	// 	return (0);
+	}
 	clean_flags(main);
 	split_path(main);
 	return (1);
