@@ -295,24 +295,6 @@ t_graph		*merge_paths(t_main *main)
 	main->copy_paths = NULL;
 	cp_paths(main);
 	mark(main);
-// <----------------------------------------------------------- FREEEEEEEEEEEEEE
-		// t_paths *a1;
-		// t_path *a2;
-
-		// a1 = main->copy_paths;
-		// while (a1)
-		// {
-		// 	printf("\n\n");
-		// 	a2 = a1->path;
-		// 	while (a2)
-		// 	{
-		// 		printf("%s-%c  \n", a2->node->name, a2->node->split);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n\n");
-		// 	a1 = a1->next;
-		// }
-
 	graph->start = main->graph->start->copy;
 	graph->end = main->graph->end->copy;
 	while (node)
@@ -326,23 +308,6 @@ t_graph		*merge_paths(t_main *main)
 		node = node->next;
 	}
 	linker(main);
-	// printf("after linker\n");
 	tracer(graph);
-		// t_node *a1;
-		// t_link *a2;
-
-		// a1 = graph->node;
-		// while (a1)
-		// {
-		// 	printf("%s%c: ", a1->name, a1->split);
-		// 	a2 = a1->linkbox->link;
-		// 	while (a2)
-		// 	{
-		// 		printf(">%s%c %d %d< ", a2->node->name, a2->node->split, a2->is_true, a2->used);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n\n");
-		// 	a1 = a1->next;
-		// }
 	return (graph);
 }

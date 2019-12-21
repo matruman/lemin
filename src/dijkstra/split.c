@@ -60,6 +60,7 @@ static	t_node	*crt_node(t_node *parent, t_node *firts, t_main *main)
 	new->distance = MAXINT / 2;
 	new->is_known = 0;
 	new->is_visit = 0;
+	new->copy = NULL;
 	new->split = 'I';
 	new->id = parent->id;
 	new->name = parent->name;
@@ -122,15 +123,15 @@ void            split_path(t_main *main)
 			change = path->next->node->linkbox->link;
 			while (change)
 			{
-				if (change->node != tmp && change->node != path->node //----------------------------------------------------------
+				if (change->node != tmp && change->node != path->node
 					&& change->node != path->next->next->node)
 				{
-					if (change->is_true == -1)
-					{
-						swap_link(change->node, path->next->node, tmp, 1);
-						rechange_link(change, path->next->node, tmp);
-					}
-					else if (!change->is_true)
+					// if (change->is_true == -1)
+					// {
+					// 	swap_link(change->node, path->next->node, tmp, 1);
+					// 	rechange_link(change, path->next->node, tmp);
+					// }
+					if (!change->is_true)
 					{
 						swap_link(change->node, path->next->node, path->next->node, -1);
 						new_links(change->node, tmp, change->llink);

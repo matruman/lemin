@@ -23,6 +23,8 @@ void	display_graph(t_graph	*graph)
 	node = graph->node;
 	while (node)
 	{
+		if (node->linkbox->count)
+		{
 		link = node->linkbox->link;
 		while (link)
 		{
@@ -53,6 +55,7 @@ void	display_graph(t_graph	*graph)
 				// else if (link->is_true == 0)
 				// 	line(mlx_ptr, win_ptr, node->x * size, node->y * size, link->node->x * size, link->node->y * size, 0xffffff);
 			link = link->next;
+			}
 		}
 		i++;
 		node = node->next;

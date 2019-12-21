@@ -51,7 +51,7 @@ static	void	common(t_main *main)
 	while (dijkstra(main))
 	{
 		result = merge_paths(main);
-		p();
+	//	p();
 		// t_node *a1;
 		// t_link *a2;
 
@@ -76,32 +76,30 @@ static	void	common(t_main *main)
 		if (!calc(main))
 		{
 			ft_putstr("323232\n");
-			printf("%d %d %d\n", main->waybox->f_score, main->waybox->f_count, main->ants);
 			run_ants(main, 1);
-			display_graph(result);
+	//		display_graph(result);
 			return ;
 		}
 	}
 	ft_putstr("sdsd\n");
-	printf("%d %d %d\n", main->waybox->f_score, main->waybox->f_count, main->ants);
 	run_ants(main, 0);
-		t_node *a1;
-		t_link *a2;
+		// t_node *a1;
+		// t_link *a2;
 
-		a1 = main->graph->node;
-		while (a1)
-		{
-			printf("%s%c: ", a1->name, a1->split);
-			a2 = a1->linkbox->link;
-			while (a2)
-			{
-				printf(">%s %d< ", a2->node->name, a2->is_true);
-				a2 = a2->next;
-			}
-			printf("\n");
-			a1 = a1->next;
-		}
-	display_graph(main->graph);
+		// a1 = main->graph->node;
+		// while (a1)
+		// {
+		// 	printf("%s%c: ", a1->name, a1->split);
+		// 	a2 = a1->linkbox->link;
+		// 	while (a2)
+		// 	{
+		// 		printf(">%s%c %d< ", a2->node->name, a1->split, a2->is_true);
+		// 		a2 = a2->next;
+		// 	}
+		// 	printf("\n");
+		// 	a1 = a1->next;
+		// }
+ //	display_graph(main->graph);
 }
 
 
