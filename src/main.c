@@ -99,7 +99,7 @@ static	void	common(t_main *main)
 		// 	printf("\n");
 		// 	a1 = a1->next;
 		// }
- //	display_graph(main->graph);
+ 	display_graph(result);
 }
 
 
@@ -121,6 +121,7 @@ int				main(int a, char **b)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
+	//display_graph(main->graph);
 	// while (dijkstra(main));
 	// 	t_node *a1;
 	// 	t_link *a2;
