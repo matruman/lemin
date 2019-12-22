@@ -33,6 +33,7 @@ SRC				= src/main.c \
 				  src/way/ants_going.c \
 				  src/free.c \
 				  src/way/helps.c \
+				  src/reader/output.c \
 				  gnl/get_next_line.c
 
 OBJ = $(patsubst %.c,%.o,$(SRC))

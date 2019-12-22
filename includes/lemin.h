@@ -13,6 +13,7 @@
 #ifndef LEMIN_H
 # define LEMIN_H
 # define MAXINT 2147483647
+# define OUTPUT_LEN 8000
 
 # include "../gnl/get_next_line.h"
 
@@ -27,6 +28,7 @@ typedef struct		s_main
 	struct s_paths	*paths;
 	struct s_paths	*copy_paths;
 	struct s_paths	*copy_last;
+	struct s_out	*output;
 }					t_main;
 
 typedef struct		s_link
@@ -115,6 +117,13 @@ typedef struct		s_paths
 	struct s_paths	*next;
 }					t_paths;
 
+typedef struct		s_out
+{
+	char			*str;
+	int				used;
+	struct s_out	*next;
+}					t_out;
+
 void				*lm_init(int res, char *line);
 void				die(void);
 
@@ -152,6 +161,10 @@ void				mark(t_main *main, t_path *path,
 void				set_result(t_way ***ways, int count,
 							int score, t_main *main);
 int					ways_count(t_main *main, t_graph *graph);
+
+t_out				*output_init(void);
+void				output_write(t_main *main, char *str);
+void				output_flush(t_main *main);
 
 void				display_graph(t_graph	*graph);
 

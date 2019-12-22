@@ -86,6 +86,7 @@ void			run_ants(t_main *main, int flag)
 		needle = main->waybox->second;
 		count = main->waybox->s_count;
 	}
+	output_flush(main);
 	while (main->waybox->success != main->ants)
 	{
 		ants_exec(main, needle, count);
