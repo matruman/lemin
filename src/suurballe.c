@@ -123,6 +123,11 @@ void	linker(t_main *main)
 	}
 }
 
+void	linker_1(t_main *main)
+{
+	
+}
+
 void		tracer(t_graph *graph)
 {
 	t_node *node;
@@ -152,86 +157,17 @@ void		tracer(t_graph *graph)
 	}
 }
 
-// void		unsplit_graph(t_graph *graph)
-// {
-// 	t_node		*node;
-// 	t_node		*check;
-// 	t_link		*clink;
-// 	t_link		*nlink;
-// 	t_link		*n2link;
-
-// 	check = graph->node;
-// 	while (check->next)
-// 	{
-// 		node = check->next;
-// 		while (node)
-// 		{
-// 			printf("check: name = %s id = %d\n node: name = %s id = %d\n\n", check->name, check->id, node->name, node->id);
-// 			if (check->id == node->id)
-// 			{
-// 				clink = check->linkbox->link;
-// 				nlink = node->linkbox->link;
-// 				while (clink)
-// 				{
-// 					n2link = node->linkbox->link;
-// 					while (n2link)
-// 					{
-// 						if (n2link->node == clink->node)
-// 						{
-
-// 							n2link->relink->is_true = -2;
-// 						}
-// 						n2link = n2link->next;
-// 					}
-// 					clink->relink->node = node;
-// 					clink = clink->next;
-// 				}	
-// 				while (nlink->next)
-// 					nlink = nlink->next;
-// 				nlink->next = check->linkbox->link;
-// 				check->linkbox->link = NULL;
-// 			}
-// 			node = node->next;
-// 		}
-// 		check = check->next;
-// 	}
-// }
-
-// void		unsplit_graph(t_graph *graph)
-// {
-// 	t_node		*node;
-// 	t_node		*check;
-
-// 	check = graph->node;
-// 	while (check->next)
-// 	{
-// 		node = check->next;
-// 		while (node)
-// 		{
-// 			printf("check: name = %s id = %d\n node: name = %s id = %d\n\n", check->name, check->id, node->name, node->id);
-// 			if (check->id == node->id)
-// 			{
-// 				if (check->split == 'I')
-// 					check->out = node;
-// 				else
-// 					node->out = check;
-// 			}
-// 			node = node->next;
-// 		}
-// 		check = check->next;
-// 	}
-// }
 
 static	t_paths	*copy_paths(t_paths *paths, t_main *main)
 {
-    t_paths *parent;
+	t_paths *parent;
 
-    if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
-        die();
-    parent->s_len = paths->s_len;
-    parent->n_len = paths->n_len;
-    parent->path = NULL;
-    parent->next = NULL;
+	if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
+		die();
+	parent->s_len = paths->s_len;
+	parent->n_len = paths->n_len;
+	parent->path = NULL;
+	parent->next = NULL;
 	parent->last = NULL;
 	if (!main->copy_paths)
 	{
@@ -246,14 +182,14 @@ static	t_paths	*copy_paths(t_paths *paths, t_main *main)
 
 static	void	copy_path(t_path *path, t_paths *parent)
 {
-    t_path  *new;
+	t_path  *new;
 
-    if (!(new = (t_path*)malloc(sizeof(t_path))))
-        die();
-    new->node = path->node;
-    new->score = path->score;
-    new->next = NULL;
-    if (!parent->path)
+	if (!(new = (t_path*)malloc(sizeof(t_path))))
+		die();
+	new->node = path->node;
+	new->score = path->score;
+	new->next = NULL;
+	if (!parent->path)
 	{
 		parent->path = new;
 		parent->last = new;
