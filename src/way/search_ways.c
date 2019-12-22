@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../includes/lemin.h"
+void	        set_result(t_way ***ways, int count,
+                            int score, t_main *main);
+int		        ways_count(t_main *main, t_graph *graph);
 
 static	t_node	*get_node(t_node *start)
 {
@@ -70,66 +73,14 @@ static	t_way	*get_struct(t_node **here)
 	return (NULL);
 }
 
-static	int		ways_count(t_main *main, t_graph *graph)
+static	int		fnorm(t_way ***way, t_main *main, t_graph *graph)
 {
 	t_node	*tmp;
-	t_link	*link;
-	int		count;
-
-	count = 0;
-	tmp = graph->node;
-	while (tmp)
-	{
-		if (tmp->id == main->graph->start->id)
-		{
-			main->waybox->start = tmp;
-			link = tmp->linkbox->link;
-			while (link)
-			{
-				if (link->is_true)
-					++count;
-				link = link->next;
-			}
-			return (count);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-static	void	set_result(t_way ***ways, int count, int score, t_main *main)
-{
-	if (!main->waybox->first)
-	{
-		main->waybox->first = ways;
-		main->waybox->f_count = count;
-		main->waybox->f_score = score;
-		return ;
-	}
-	if (main->waybox->second)
-		free_way(main->waybox->second, main->waybox->s_count);
-	main->waybox->second = main->waybox->first;
-	main->waybox->s_count = main->waybox->f_count;
-	main->waybox->s_score = main->waybox->f_score;
-	main->waybox->first = ways;
-	main->waybox->f_count = count;
-	main->waybox->f_score = score;
-}
-
-int				search_ways(t_main *main, t_graph *graph)
-{
-	t_way	***way;
-	t_node	*tmp;
-	int		ways_len;
 	int		final;
 	int		count;
 	int		i;
 	int		j;
 
-	if (!(ways_len = ways_count(main, graph)))
-		return (0);
-	if (!(way = (t_way***)malloc((1 + ways_len) * sizeof(void*))))
-		die();
 	j = 0;
 	final = 0;
 	while ((count = counter(graph, main)))
@@ -147,4 +98,16 @@ int				search_ways(t_main *main, t_graph *graph)
 	way[j] = NULL;
 	set_result(way, j, final, main);
 	return (j);
+}
+
+int				search_ways(t_main *main, t_graph *graph)
+{
+	t_way	***way;
+	int		ways_len;
+
+	if (!(ways_len = ways_count(main, graph)))
+		return (0);
+	if (!(way = (t_way***)malloc((1 + ways_len) * sizeof(void*))))
+		die();
+	return (fnorm(way, main, graph));
 }
