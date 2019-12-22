@@ -33,9 +33,8 @@ static	t_node	*get_node(t_node *start)
 	return (NULL);
 }
 
-static	int		counter(t_graph *graph, t_main *main)
+static	int		counter(t_main *main)
 {
-	t_link	*link;
 	t_node	*tmp;
 	int		count;
 
@@ -73,7 +72,7 @@ static	t_way	*get_struct(t_node **here)
 	return (NULL);
 }
 
-static	int		fnorm(t_way ***way, t_main *main, t_graph *graph)
+static	int		fnorm(t_way ***way, t_main *main)
 {
 	t_node	*tmp;
 	int		final;
@@ -83,7 +82,7 @@ static	int		fnorm(t_way ***way, t_main *main, t_graph *graph)
 
 	j = 0;
 	final = 0;
-	while ((count = counter(graph, main)))
+	while ((count = counter(main)))
 	{
 		if (!(way[j] = (t_way**)malloc((1 + count) * sizeof(void*))))
 			die();
@@ -109,5 +108,5 @@ int				search_ways(t_main *main, t_graph *graph)
 		return (0);
 	if (!(way = (t_way***)malloc((1 + ways_len) * sizeof(void*))))
 		die();
-	return (fnorm(way, main, graph));
+	return (fnorm(way, main));
 }

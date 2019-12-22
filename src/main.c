@@ -41,15 +41,14 @@ static	void	common(t_main *main)
 }
 
 
-int				main(int a, char **b)
+int				main(void)
 {
 	t_main	*main;
 	char	*line;
 	int		ch;
 
 	line = NULL;
-	if ((ch = open(b[1], O_RDONLY)) == -1)
-		die();
+	ch = 0;
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();
 	ft_memdel((void**)&line);
@@ -59,6 +58,8 @@ int				main(int a, char **b)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
+	if (!main->graph->start || !main->graph->end)
+		die();
 	common(main);
 	return (0);
 }

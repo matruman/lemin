@@ -92,7 +92,6 @@ void			split_path(t_main *main)
 {
 	t_path	*path;
 	t_node	*tmp;
-	t_link	*change;
 
 	path = main->paths->path;
 	while (path->next->next)

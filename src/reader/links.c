@@ -28,8 +28,8 @@ static	void	push_link_norm(t_node *parent, t_link *new)
 	tmp->next = new;
 }
 
-static	t_link	*push_link(t_main *main, t_node *parent,
-	t_node *href, int flag)
+static	t_link	*push_link(t_node *parent,
+	t_node *href)
 {
 	t_link	*new;
 
@@ -71,8 +71,8 @@ static	void	node_search(t_main *main, char *str1, char *str2)
 	}
 	if (!first || !second)
 		die();
-	new = push_link(main, first, second, 1);
-	new->relink = push_link(main, second, first, 0);
+	new = push_link(first, second);
+	new->relink = push_link(second, first);
 	new->relink->relink = new;
 	first->linkbox->count += 1;
 	second->linkbox->count += 1;
