@@ -56,3 +56,27 @@ void			free_graph(t_graph *graph)
 	}
 	free(graph);
 }
+
+void			free_path(t_main *main)
+{
+	t_paths	*paths;
+	t_paths	*tpaths;
+	t_path	*path;
+	t_path	*tpath;
+
+	paths = main->copy_paths;
+	while (paths)
+	{
+		path = paths->path;
+		while (path)
+		{
+			tpath = path->next;
+			free(path);
+			path = tpath;
+		}
+		tpaths = paths->next;
+		free(paths);
+		paths = tpaths;
+	}
+	main->copy_paths = NULL;
+}

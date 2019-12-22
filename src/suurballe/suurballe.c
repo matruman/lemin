@@ -104,7 +104,6 @@ t_graph		*merge_paths(t_main *main)
 		die();
 	graph->node = NULL;
 	node = main->graph->node;
-	main->copy_paths = NULL;
 	cp_paths(main);
 	mark(main, 0, 0, 0);
 	graph->start = main->graph->start->copy;
@@ -121,5 +120,6 @@ t_graph		*merge_paths(t_main *main)
 	}
 	linker(main->copy_paths, 0, 0, 0);
 	tracer(graph);
+	free_path(main);
 	return (graph);
 }

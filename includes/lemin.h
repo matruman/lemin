@@ -14,8 +14,7 @@
 # define LEMIN_H
 # define MAXINT 2147483647
 
-#include "../gnl/get_next_line.h"
-#include <stdio.h>
+# include "../gnl/get_next_line.h"
 
 typedef struct		s_main
 {
@@ -100,14 +99,14 @@ typedef struct		s_way
 	int				ant;
 }					t_way;
 
-typedef struct 		s_path
+typedef struct		s_path
 {
 	int				score;
 	t_node			*node;
 	struct s_path	*next;
 }					t_path;
 
-typedef struct 		s_paths
+typedef struct		s_paths
 {
 	int				s_len;
 	int				n_len;
@@ -136,18 +135,22 @@ void				split_path(t_main *main);
 t_graph				*merge_paths(t_main *main);
 
 int					search_ways(t_main *main, t_graph *graph);
+
 void				free_way(t_way ***ways, int count);
-void        	    free_graph(t_graph *graph);
-void   				run_ants(t_main *main, int flag);
+void				free_graph(t_graph *graph);
+void				free_path(t_main *main);
+
+void				run_ants(t_main *main, int flag);
 void				swap_link(t_node *sch, t_node *needle,
 							t_node *swap, int f);
 int					is_set(t_main *main, t_link *link);
 int					min_int(int first, int second);
 void				cp_paths(t_main *main);
 t_node				*copy_node(t_node *node);
-void				mark(t_main *main, t_path *path, t_paths *paths, t_link *link);
+void				mark(t_main *main, t_path *path,
+							t_paths *paths, t_link *link);
 void				set_result(t_way ***ways, int count,
-                            int score, t_main *main);
+							int score, t_main *main);
 int					ways_count(t_main *main, t_graph *graph);
 
 void				display_graph(t_graph	*graph);
