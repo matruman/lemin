@@ -117,7 +117,7 @@ typedef struct 		s_paths
 }					t_paths;
 
 void				*lm_init(int res, char *line);
-void				die();
+void				die(void);
 
 void				reader(t_main *main, char **line, int ch);
 void				reader_words(t_main *main, char **line, int ch);
@@ -145,6 +145,10 @@ int					min_int(int first, int second);
 void				cp_paths(t_main *main);
 t_node				*copy_node(t_node *node);
 void				mark(t_main *main, t_path *path, t_paths *paths, t_link *link);
+void				set_result(t_way ***ways, int count,
+                            int score, t_main *main);
+int					ways_count(t_main *main, t_graph *graph);
 
-void	display_graph(t_graph	*graph);
+void				display_graph(t_graph	*graph);
+
 #endif

@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/lemin.h"
-void	        set_result(t_way ***ways, int count,
-                            int score, t_main *main);
-int		        ways_count(t_main *main, t_graph *graph);
 
 static	t_node	*get_node(t_node *start)
 {

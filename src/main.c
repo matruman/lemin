@@ -12,10 +12,10 @@
 
 #include "../includes/lemin.h"
 
-void			die()
+void			die(void)
 {
 	ft_putstr("ERROR\n");
-	exit(1);	
+	exit(1);
 }
 
 static	int		calc(t_main *main)
@@ -39,7 +39,6 @@ static	void	common(t_main *main)
 	}
 	run_ants(main, 0);
 }
-
 
 int				main(void)
 {
