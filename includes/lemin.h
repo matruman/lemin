@@ -142,6 +142,9 @@ void				swap_link(t_node *sch, t_node *needle,
 							t_node *swap, int f);
 int					is_set(t_main *main, t_link *link);
 int					min_int(int first, int second);
+void				cp_paths(t_main *main);
+t_node				*copy_node(t_node *node);
+void				mark(t_main *main, t_path *path, t_paths *paths, t_link *link);
 
 void	display_graph(t_graph	*graph);
 #endif

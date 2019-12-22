@@ -10,55 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lemin.h"
+#include "../../includes/lemin.h"
 
-t_node		*copy_node(t_node *node)
-{
-	t_node		*new;
-
-	if (!(new = (t_node *)malloc(sizeof(t_node))) ||
-	!(new->linkbox = (t_rel*)malloc(sizeof(t_rel))))
-		die();
-	new->linkbox->count = 0;
-	new->linkbox->link = NULL;
-	new->distance = MAXINT / 2;
-	new->is_known = 0;
-	new->is_visit = 0;
-	new->split = node->split;
-	new->id = node->id;
-	new->name = node->name;
-	new->x = node->x;
-	new->y = node->y;
-	new->next = NULL;
-	return (new);
-}
-
-void		mark(t_main *main, t_path *path, t_paths *paths, t_link *link)
-{
-	paths = main->copy_paths;
-	while (paths)
-	{
-		path = paths->path;
-		while (path)
-		{
-			if (path->node->split == 'I')
-			{
-				link = path->node->linkbox->link;
-				while (link->node->id != path->node->id &&
-				link->node->split == 'O')
-					link = link->next;
-				path->node = link->node;
-			}
-			if (!path->node->copy)
-				path->node->copy = copy_node(path->node);
-			path->node = path->node->copy;
-			path = path->next;
-		}
-		paths = paths->next;
-	}
-}
-
-void	create_link(t_link **link, t_path *path)
+void		create_link(t_link **link, t_path *path)
 {
 	if (!(*link = (t_link *)malloc(sizeof(t_link))))
 		die();
@@ -71,7 +25,7 @@ void	create_link(t_link **link, t_path *path)
 	path->node->linkbox->count += 1;
 }
 
-void	create_relink(t_link **relink, t_path *path)
+void		create_relink(t_link **relink, t_path *path)
 {
 	if (!(*relink = (t_link *)malloc(sizeof(t_link))))
 		die();
@@ -85,7 +39,7 @@ void	create_relink(t_link **relink, t_path *path)
 	path->next->node->linkbox->count += 1;
 }
 
-void	linker(t_paths *paths, t_path *path, t_link *link, t_link *relink)
+void		linker(t_paths *paths, t_path *path, t_link *link, t_link *relink)
 {
 	while (paths)
 	{
@@ -138,67 +92,6 @@ void		tracer(t_graph *graph)
 			link = link->next;
 		}
 		node = node->next;
-	}
-}
-
-static	t_paths	*copy_paths(t_paths *paths, t_main *main)
-{
-	t_paths *parent;
-
-	if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
-		die();
-	parent->s_len = paths->s_len;
-	parent->n_len = paths->n_len;
-	parent->path = NULL;
-	parent->next = NULL;
-	parent->last = NULL;
-	if (!main->copy_paths)
-	{
-		main->copy_paths = parent;
-		main->copy_last = parent;
-		return (parent);
-	}
-	main->copy_last->next = parent;
-	main->copy_last = parent;
-	return (parent);
-}
-
-static	void	copy_path(t_path *path, t_paths *parent)
-{
-	t_path	*new;
-
-	if (!(new = (t_path*)malloc(sizeof(t_path))))
-		die();
-	new->node = path->node;
-	new->score = path->score;
-	new->next = NULL;
-	if (!parent->path)
-	{
-		parent->path = new;
-		parent->last = new;
-		return ;
-	}
-	parent->last->next = new;
-	parent->last = new;
-}
-
-void			cp_paths(t_main *main)
-{
-	t_paths	*paths;
-	t_paths	*c_paths;
-	t_path	*path;
-
-	paths = main->paths;
-	while (paths)
-	{
-		c_paths = copy_paths(paths, main);
-		path = paths->path;
-		while (path)
-		{
-			copy_path(path, c_paths);
-			path = path->next;
-		}
-		paths = paths->next;
 	}
 }
 
