@@ -33,12 +33,8 @@ t_node		*copy_node(t_node *node)
 	return (new);
 }
 
-void 	mark(t_main *main)
+void		mark(t_main *main, t_path *path, t_paths *paths, t_link *link)
 {
-	t_path	*path;
-	t_paths	*paths;
-	t_link	*link;
-	
 	paths = main->copy_paths;
 	while (paths)
 	{
@@ -48,7 +44,8 @@ void 	mark(t_main *main)
 			if (path->node->split == 'I')
 			{
 				link = path->node->linkbox->link;
-				while (link->node->id != path->node->id && link->node->split == 'O')
+				while (link->node->id != path->node->id &&
+				link->node->split == 'O')
 					link = link->next;
 				path->node = link->node;
 			}
@@ -61,71 +58,58 @@ void 	mark(t_main *main)
 	}
 }
 
-void	linker(t_main *main)
+void	create_link(t_link **link, t_path *path)
 {
-	t_path	*path;
-	t_paths	*paths;
-	t_link	*link;
-	t_link	*relink;
+	if (!(*link = (t_link *)malloc(sizeof(t_link))))
+		die();
+	(*link)->node = path->next->node;
+	(*link)->llink = 1;
+	(*link)->coming = 0;
+	(*link)->used = 0;
+	(*link)->next = path->node->linkbox->link;
+	path->node->linkbox->link = *link;
+	path->node->linkbox->count += 1;
+}
 
-	paths = main->copy_paths;
+void	create_relink(t_link **relink, t_path *path)
+{
+	if (!(*relink = (t_link *)malloc(sizeof(t_link))))
+		die();
+	(*relink)->node = path->node;
+	(*relink)->llink = 1;
+	(*relink)->is_true = -1;
+	(*relink)->used = 0;
+	(*relink)->coming = 0;
+	(*relink)->next = path->next->node->linkbox->link;
+	path->next->node->linkbox->link = *relink;
+	path->next->node->linkbox->count += 1;
+}
+
+void	linker(t_paths *paths, t_path *path, t_link *link, t_link *relink)
+{
 	while (paths)
 	{
 		path = paths->path;
 		while (path->next)
 		{
 			link = path->node->linkbox->link;
-			while (link)
-			{
-				if (link->node == path->next->node)
-					break ;
+			while (link && link->node != path->next->node)
 				link = link->next;
-			}
 			if (!link)
-			{
-				if (!(link = (t_link *)malloc(sizeof(t_link))))
-					die();
-				link->node = path->next->node;
-				link->llink = 1;
-				link->coming = 0;
-				link->used = 0;
-				link->next = path->node->linkbox->link;
-				path->node->linkbox->link = link;
-				path->node->linkbox->count += 1;
-			}
+				create_link(&link, path);
 			link->is_true = 1;
 			link->used += 1;
 			relink = path->next->node->linkbox->link;
-			while (relink)
-			{
-				if (relink->node == path->node)
-					break ;
+			while (relink && relink->node != path->node)
 				relink = relink->next;
-			}
 			if (!relink)
-			{
-				if (!(relink = (t_link *)malloc(sizeof(t_link))))
-					die();
-				relink->node = path->node;
-				relink->llink = 1;
-				relink->is_true = -1;
-				relink->used = 0;
-				link->coming = 0;
-				relink->next = path->next->node->linkbox->link;
-				path->next->node->linkbox->link = relink;
-				path->next->node->linkbox->count += 1;
-			}
+				create_relink(&relink, path);
 			link->relink = relink;
 			relink->relink = link;
 			path = path->next;
 		}
 		paths = paths->next;
 	}
-}
-
-void	linker_1(t_main *main)
-{
-	
 }
 
 void		tracer(t_graph *graph)
@@ -157,7 +141,6 @@ void		tracer(t_graph *graph)
 	}
 }
 
-
 static	t_paths	*copy_paths(t_paths *paths, t_main *main)
 {
 	t_paths *parent;
@@ -182,7 +165,7 @@ static	t_paths	*copy_paths(t_paths *paths, t_main *main)
 
 static	void	copy_path(t_path *path, t_paths *parent)
 {
-	t_path  *new;
+	t_path	*new;
 
 	if (!(new = (t_path*)malloc(sizeof(t_path))))
 		die();
@@ -230,7 +213,7 @@ t_graph		*merge_paths(t_main *main)
 	node = main->graph->node;
 	main->copy_paths = NULL;
 	cp_paths(main);
-	mark(main);
+	mark(main, 0, 0, 0);
 	graph->start = main->graph->start->copy;
 	graph->end = main->graph->end->copy;
 	while (node)
@@ -243,7 +226,7 @@ t_graph		*merge_paths(t_main *main)
 		}
 		node = node->next;
 	}
-	linker(main);
+	linker(main->copy_paths, 0, 0, 0);
 	tracer(graph);
 	return (graph);
 }
