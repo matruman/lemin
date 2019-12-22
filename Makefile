@@ -21,6 +21,7 @@ SRC				= src/main.c \
 				  src/reader/rooms.c \
 				  src/reader/links.c \
 				  src/reader/tmp.c \
+				  src/reader/die_atoi.c \
 				  src/dijkstra/dijkstra.c \
 				  src/dijkstra/result.c \
 				  src/dijkstra/helps.c \

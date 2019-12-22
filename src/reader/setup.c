@@ -38,7 +38,7 @@ void			*lm_init(int res, char *line)
 
 	if (res < 1 || !(main = (t_main*)malloc(sizeof(t_main))))
 		return (NULL);
-	if ((main->ants = ft_atoi(line)) < 1)
+	if ((main->ants = die_atoi(line)) < 1)
 		return (NULL);
 	if (!(main->graph = (t_graph*)malloc(sizeof(t_graph))))
 		return (NULL);

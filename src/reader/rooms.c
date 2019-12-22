@@ -14,14 +14,14 @@
 
 void			reader_words(t_main *main, char **line, int ch)
 {
-	if (ft_strstr(*line, "##start") && !main->graph->start)
+	if (!ft_strcmp(*line, "##start") && !main->graph->start)
 	{
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
 		reader_crtroom(main, ft_strsplit(*line, ' '), 'S');
 		return ;
 	}
-	else if (ft_strstr(*line, "##end") && !main->graph->end)
+	else if (!ft_strcmp(*line, "##end") && !main->graph->end)
 	{
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
@@ -74,8 +74,8 @@ void			reader_crtroom(t_main *main, char **items, char flag)
 	new->is_visit = 0;
 	new->split = 0;
 	new->name = ft_strdup(items[0]);
-	new->x = ft_atoi(items[1]);
-	new->y = ft_atoi(items[2]);
+	new->x = die_atoi(items[1]);
+	new->y = die_atoi(items[2]);
 	new->next = NULL;
 	new->copy = NULL;
 	if (flag == 'S')

@@ -123,6 +123,7 @@ void				reader(t_main *main, char **line, int ch);
 void				reader_words(t_main *main, char **line, int ch);
 void				reader_crtroom(t_main *main, char **items, char flag);
 void				reader_crtlink(t_main *main, char **items);
+int					die_atoi(char *str);
 
 int					lm_count(char **items);
 void				cleaner_2_array(char **array, int count);
