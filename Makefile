@@ -40,7 +40,7 @@ OBJ = $(patsubst %.c,%.o,$(SRC))
 all: $(NAME)
 
 $(NAME): lib $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) dgraph/dgraph.a -L gnl/libft/ -lft  -framework OpenGL -framework AppKit
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L gnl/libft/ -lft
 
 lib:
 	make -C gnl/libft
