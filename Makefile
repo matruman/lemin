@@ -25,7 +25,9 @@ SRC				= src/main.c \
 				  src/dijkstra/result.c \
 				  src/dijkstra/helps.c \
 				  src/dijkstra/split.c \
-				  src/suurballe.c \
+				  src/suurballe/suurballe.c \
+				  src/suurballe/suurballe1.c \
+				  src/suurballe/cp_paths.c \
 				  src/way/search_ways.c \
 				  src/way/ants_going.c \
 				  src/free.c \
