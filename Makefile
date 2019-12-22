@@ -31,8 +31,9 @@ SRC				= src/main.c \
 				  src/suurballe/cp_paths.c \
 				  src/way/search_ways.c \
 				  src/way/ants_going.c \
-				  src/free.c \
 				  src/way/helps.c \
+				  src/way/lm_itoa.c \
+				  src/free.c \
 				  src/reader/output.c \
 				  gnl/get_next_line.c
 

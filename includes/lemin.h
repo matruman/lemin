@@ -13,7 +13,7 @@
 #ifndef LEMIN_H
 # define LEMIN_H
 # define MAXINT 2147483647
-# define OUTPUT_LEN 8000
+# define OUTPUT_LEN 80000
 
 # include "../gnl/get_next_line.h"
 
@@ -163,8 +163,9 @@ void				set_result(t_way ***ways, int count,
 int					ways_count(t_main *main, t_graph *graph);
 
 t_out				*output_init(void);
-void				output_write(t_main *main, char *str);
-void				output_flush(t_main *main);
+void				output_write(t_main *main, char *str, int flag);
+void				output_flush(t_main *main, int flag);
+void				lm_itoa(t_main *main, int n);
 
 void				display_graph(t_graph	*graph);
 

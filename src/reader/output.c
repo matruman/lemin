@@ -48,7 +48,7 @@ static	void	output_new_line(t_out *output)
 	}
 }
 
-void			output_write(t_main *main, char *str)
+void			output_write(t_main *main, char *str, int flag)
 {
 	t_out	*output;
 
@@ -62,18 +62,20 @@ void			output_write(t_main *main, char *str)
 		{
 			output->str[output->used] = 0;
 			output->next = output_init();
-			return (output_write(main, str));
+			return (output_write(main, str, flag));
 		}
 	}
-	output_new_line(output);
+	if (flag)
+		output_new_line(output);
 }
 
-void			output_flush(t_main *main)
+void			output_flush(t_main *main, int flag)
 {
 	t_out	*toutput;
 	t_out	*output;
 
-	output_write(main, "");
+	if (flag)
+		output_write(main, "", 1);
 	output = main->output;
 	while (output)
 	{

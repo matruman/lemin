@@ -27,7 +27,7 @@ static	int		calc(t_main *main)
 static	void	common(t_main *main)
 {
 	if (!dijkstra(main))
-		return (output_flush(main));
+		return (output_flush(main, 1));
 	while (dijkstra(main))
 	{
 		search_ways(main, merge_paths(main));
@@ -50,13 +50,13 @@ int				main(void)
 	ch = 0;
 	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
 		die();
-	output_write(main, line);
+	output_write(main, line, 1);
 	ft_memdel((void**)&line);
 	while (get_next_line(ch, &line) > 0)
 	{
 		if (!(line[0] == '#' && line[1] != '#'))
 			reader(main, &line, ch);
-		output_write(main, line);
+		output_write(main, line, 1);
 		ft_memdel((void**)&line);
 	}
 	if (!main->graph->start || !main->graph->end)
