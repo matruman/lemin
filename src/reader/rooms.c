@@ -16,6 +16,7 @@ void			reader_words(t_main *main, char **line, int ch)
 {
 	if (!ft_strcmp(*line, "##start") && !main->graph->start)
 	{
+		output_write(main, *line, 1);
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
 		reader_crtroom(main, ft_strsplit(*line, ' '), 'S');
@@ -23,6 +24,7 @@ void			reader_words(t_main *main, char **line, int ch)
 	}
 	else if (!ft_strcmp(*line, "##end") && !main->graph->end)
 	{
+		output_write(main, *line, 1);
 		ft_memdel((void**)line);
 		get_next_line(ch, line);
 		reader_crtroom(main, ft_strsplit(*line, ' '), 'E');
