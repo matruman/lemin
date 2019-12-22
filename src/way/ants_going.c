@@ -74,14 +74,14 @@ static	void	ants_exec(t_main *main, t_way ***items, int count)
 	}
 }
 
-void            run_ants(t_main *main, int flag)
+void			run_ants(t_main *main, int flag)
 {
-    t_way	***needle;
+	t_way	***needle;
 	int		count;
 
 	needle = main->waybox->first;
 	count = main->waybox->f_count;
-    if (flag)
+	if (flag)
 	{
 		needle = main->waybox->second;
 		count = main->waybox->s_count;

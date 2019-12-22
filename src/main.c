@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
-void p(void) {printf("HELLO\n");}
+
 void			die()
 {
 	ft_putstr("ERROR\n");
@@ -24,82 +24,20 @@ static	int		calc(t_main *main)
 			(main->waybox->f_count - 1)) < main->ants);
 }
 
-// static	void	common(t_main *main)
-// {
-// 	t_graph	*result;
-
-// 	if (!dijkstra(main))
-// 		return ;
-// 	if (!calc(main))
-// 		return (run_ants(main, 0));
-// 	while (dijkstra(main))
-// 	{
-// 		result = merge_paths(main);
-// 		search_ways(main, result);
-// 		if (!calc(main))
-// 			return (run_ants(main, 0));
-// 	}
-// 	run_ants(main, 1);
-// }
-
 static	void	common(t_main *main)
 {
-	t_graph	*result;
-
 	if (!dijkstra(main))
 		return ;
 	while (dijkstra(main))
 	{
-		result = merge_paths(main);
-	//	p();
-		// t_node *a1;
-		// t_link *a2;
-
-		// a1 = result->node;
-		// while (a1)
-		// {
-		// 	printf("%s%c: ", a1->name, a1->split);
-		// 	a2 = a1->linkbox->link;
-		// 	while (a2)
-		// 	{
-		// 		printf(">%s %d< ", a2->node->name, a2->is_true);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n\n");
-		// 	a1 = a1->next;
-		// }
-		// display_graph(result);
-		// return ;
-		// display_graph(result);
-		// return ;
-		search_ways(main, result);
+		search_ways(main, merge_paths(main));
 		if (!calc(main))
 		{
-			ft_putstr("323232\n");
 			run_ants(main, 1);
-	//		display_graph(result);
 			return ;
 		}
 	}
-	ft_putstr("sdsd\n");
 	run_ants(main, 0);
-		// t_node *a1;
-		// t_link *a2;
-
-		// a1 = main->graph->node;
-		// while (a1)
-		// {
-		// 	printf("%s%c: ", a1->name, a1->split);
-		// 	a2 = a1->linkbox->link;
-		// 	while (a2)
-		// 	{
-		// 		printf(">%s%c %d< ", a2->node->name, a1->split, a2->is_true);
-		// 		a2 = a2->next;
-		// 	}
-		// 	printf("\n");
-		// 	a1 = a1->next;
-		// }
- 	display_graph(result);
 }
 
 
@@ -121,25 +59,6 @@ int				main(int a, char **b)
 			reader(main, &line, ch);
 		ft_memdel((void**)&line);
 	}
-	//display_graph(main->graph);
-	// while (dijkstra(main));
-	// 	t_node *a1;
-	// 	t_link *a2;
-
-	// 	a1 = main->graph->node;
-	// 	while (a1)
-	// 	{
-	// 		printf("%s%c: ", a1->name, a1->split);
-	// 		a2 = a1->linkbox->link;
-	// 		while (a2)
-	// 		{
-	// 			printf(">%s %s< ", a2->node->name, a2->relink->node->name);
-	// 			a2 = a2->next;
-	// 		}
-	// 		printf("\n\n");
-	// 		a1 = a1->next;
-	// 	}
-	// exit(0);
 	common(main);
 	return (0);
 }

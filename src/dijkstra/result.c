@@ -12,16 +12,16 @@
 
 #include "../../includes/lemin.h"
 
-static  void    write_items(int *min, t_link **needle, t_link *point, int f)
+static	void	write_items(int *min, t_link **needle, t_link *point, int f)
 {
 	if (!f)
 	{
-    	*min = MAXINT;
-    	(*needle) = NULL;
+		*min = MAXINT;
+		(*needle) = NULL;
 		return ;
 	}
-    *min = point->node->distance;
-    (*needle) = point;
+	*min = point->node->distance;
+	(*needle) = point;
 }
 
 static	int		cl_memory(t_main *main)
@@ -43,92 +43,68 @@ static	int		cl_memory(t_main *main)
 	return (0);
 }
 
-static  void    crt_parent(t_main *main)
+static	void	crt_parent(t_main *main)
 {
-    t_paths *parent;
+	t_paths *parent;
 
-    if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
-        die();
-    parent->s_len = 0;
-    parent->n_len = 0;
-    parent->path = NULL;
-    parent->next = NULL;
-    parent->last = NULL;
-    if (!main->paths)
-    {
-        main->paths = parent;
-        return ;
-    }
-    parent->next = main->paths;
-    main->paths = parent;
+	if (!(parent = (t_paths*)malloc(sizeof(t_paths))))
+		die();
+	parent->s_len = 0;
+	parent->n_len = 0;
+	parent->path = NULL;
+	parent->next = NULL;
+	parent->last = NULL;
+	if (!main->paths)
+	{
+		main->paths = parent;
+		return ;
+	}
+	parent->next = main->paths;
+	main->paths = parent;
 }
 
-static  void    crt_path(t_main *main, t_node *node, t_link *need)
+static	void	crt_path(t_main *main, t_node *node, t_link *need)
 {
-    t_path  *path;
+	t_path	*path;
 
-    if (!(path = (t_path*)malloc(sizeof(t_path))))
-        die();
-    if (!main->paths->path)
-        main->paths->s_len = node->distance;
-    main->paths->n_len += 1;
-    path->node = node;
-    path->score = need->llink;
-    path->next = main->paths->path;
-    main->paths->path = path;
-    if (node != main->graph->start)
-	    reverse_link(node, need);
+	if (!(path = (t_path*)malloc(sizeof(t_path))))
+		die();
+	if (!main->paths->path)
+		main->paths->s_len = node->distance;
+	main->paths->n_len += 1;
+	path->node = node;
+	path->score = need->llink;
+	path->next = main->paths->path;
+	main->paths->path = path;
+	if (node != main->graph->start)
+		reverse_link(node, need);
 }
 
-static  int     is_set(t_main *main, t_link *link)
+int				get_path(t_main *main, int i)
 {
-    t_path  *path;
+	t_node	*node;
+	t_link	*needle;
+	t_link	*link;
+	int		min;
 
-    path = main->paths->path;
-    while (path)
-    {
-        if (path->node == link->node)
-        {
-            return (1);
-        }
-        path = path->next;
-    }
-    return (0);
-}
-
-int				get_path(t_main *main)
-{
-    t_node  *node;
-	t_link  *needle;
-    t_link  *link;
-    int     min;
-	int		i;
-
-	i = 0;
-    crt_parent(main);
-    node = main->graph->end;
-    while (node != main->graph->start && ++i)
-    {
-        link = node->linkbox->link;
+	crt_parent(main);
+	node = main->graph->end;
+	while (node != main->graph->start && ++i)
+	{
+		link = node->linkbox->link;
 		write_items(&min, &needle, link, 0);
-        while (link)
-        {
-            if (min > link->node->distance && link->is_true <= 0 && !is_set(main, link))
-                write_items(&min, &needle, link, 1);
-            link = link->next;
-        }
-        if (!needle || i > main->rooms)
+		while (link)
+		{
+			if (min > link->node->distance && link->is_true <= 0
+				&& !is_set(main, link))
+				write_items(&min, &needle, link, 1);
+			link = link->next;
+		}
+		if (!needle || i > main->rooms)
 			return (cl_memory(main));
 		crt_path(main, node, needle);
-        node = needle->node;
-    }
-    crt_path(main, node, needle);
-	// t_path *a1 = main->paths->path;
-
-	// while (a1)
-	// {
-	// 	printf("%s%c  ", a1->node->name, a1->node->split);
-	// 	a1 = a1->next;
-	// }
-    return (1);
+		node = needle->node;
+	}
+	crt_path(main, node, needle);
+	return (1);
 }

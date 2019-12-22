@@ -12,24 +12,6 @@
 
 #include "../../includes/lemin.h"
 
-static	void	swap_link(t_node *sch, t_node *needle, t_node *swap, int f)
-{
-	t_link	*tmp;
-
-	tmp = sch->linkbox->link;
-	while (tmp)
-	{
-		if (tmp->node == needle)
-		{
-			tmp->old = tmp->node;
-			tmp->is_true = f;
-			tmp->node = swap;
-			return ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 static	t_link	*crt_link(t_node *href, int is_true, int llink)
 {
 	t_link	*new;
@@ -84,34 +66,37 @@ static	void	new_links(t_node *join, t_node *created, int llink)
 	created->linkbox->link = new;
 }
 
-static	void	rechange_link(t_link *srh, t_node *from, t_node *into)
+static	void	fnorm(t_path *path, t_node *tmp)
 {
-	t_link	*tmp;
-	t_link	*swap;
+	t_link	*change;
 
-	tmp = from->linkbox->link;
-	while (tmp)
+	change = path->next->node->linkbox->link;
+	while (change)
 	{
-		if (tmp->next == srh)
+		if (change->node != tmp && change->node != path->node
+			&& change->node != path->next->next->node)
 		{
-			swap = tmp->next;
-			tmp->next = tmp->next->next;
-			swap->next = into->linkbox->link;
-			into->linkbox->link = swap;
+			if (!change->is_true)
+			{
+				swap_link(change->node, path->next->node,
+							path->next->node, -1);
+				new_links(change->node, tmp, change->llink);
+				change->is_true = 1;
+			}
 		}
-		tmp = tmp->next;
+		change = change->next;
 	}
 }
 
-void            split_path(t_main *main)
+void			split_path(t_main *main)
 {
-    t_path  *path;
+	t_path	*path;
 	t_node	*tmp;
 	t_link	*change;
 
-    path = main->paths->path;
-    while (path->next->next)
-    {
+	path = main->paths->path;
+	while (path->next->next)
+	{
 		if (!path->next->node->split)
 		{
 			tmp = crt_node(path->next->node, path->node, main);
@@ -120,45 +105,8 @@ void            split_path(t_main *main)
 			if (path->node->split == 'O')
 				swap_link(path->node, path->next->node, tmp, -1);
 			main->graph->node = tmp;
-			change = path->next->node->linkbox->link;
-			while (change)
-			{
-				if (change->node != tmp && change->node != path->node
-					&& change->node != path->next->next->node)
-				{
-					// if (change->is_true == -1)
-					// {
-					// 	swap_link(change->node, path->next->node, tmp, 1);
-					// 	rechange_link(change, path->next->node, tmp);
-					// }
-					if (!change->is_true)
-					{
-						swap_link(change->node, path->next->node, path->next->node, -1);
-						new_links(change->node, tmp, change->llink);
-						change->is_true = 1;
-					}
-				}
-				change = change->next;
-			}
+			fnorm(path, tmp);
 		}
-					// t_node *a1;
-			// t_link *a2;
-
-			// a1 = main->graph->node;
-			// while (a1)
-			// {
-			// 	printf("%s%c: ", a1->name, a1->split);
-			// 	a2 = a1->linkbox->link;
-			// 	while (a2)
-			// 	{
-			// 		printf("%s%c ", a2->node->name, a2->node->split);
-			// 		a2 = a2->next;
-			// 	}
-			// 	printf("\n\n");
-			// 	a1 = a1->next;
-			// }
-		//	display_graph(main->graph);
-			// exit(0);
 		path = path->next;
-    }
+	}
 }

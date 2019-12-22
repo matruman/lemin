@@ -32,27 +32,27 @@ void			free_way(t_way ***ways, int count)
 	free(ways);
 }
 
-void            free_graph(t_graph *graph)
+void			free_graph(t_graph *graph)
 {
-    t_node  *node;
-    t_node  *tmpn;
-    t_link  *link;
-    t_link  *tmpl;
+	t_node	*node;
+	t_node	*tmpn;
+	t_link	*link;
+	t_link	*tmpl;
 
-    node = graph->node;
-    while (node)
-    {
-        link = node->linkbox->link;
-        while (link)
-        {
-            tmpl = link->next;
-            free(link);
-            link = tmpl;
-        }
-        free(node->linkbox);
-        tmpn = node->next;
-        free(node);
-        node = tmpn;
-    }
-    free(graph);
+	node = graph->node;
+	while (node)
+	{
+		link = node->linkbox->link;
+		while (link)
+		{
+			tmpl = link->next;
+			free(link);
+			link = tmpl;
+		}
+		free(node->linkbox);
+		tmpn = node->next;
+		free(node);
+		node = tmpn;
+	}
+	free(graph);
 }

@@ -80,7 +80,7 @@ static	int		ways_count(t_main *main, t_graph *graph)
 	tmp = graph->node;
 	while (tmp)
 	{
-		if (tmp->id ==  main->graph->start->id)
+		if (tmp->id == main->graph->start->id)
 		{
 			main->waybox->start = tmp;
 			link = tmp->linkbox->link;
@@ -116,7 +116,7 @@ static	void	set_result(t_way ***ways, int count, int score, t_main *main)
 	main->waybox->f_score = score;
 }
 
-int			search_ways(t_main *main, t_graph *graph)
+int				search_ways(t_main *main, t_graph *graph)
 {
 	t_way	***way;
 	t_node	*tmp;
@@ -145,10 +145,6 @@ int			search_ways(t_main *main, t_graph *graph)
 		++j;
 	}
 	way[j] = NULL;
-	// p();
-	// display_graph(graph);
-	// return (0);
-//	free_graph(graph);
 	set_result(way, j, final, main);
 	return (j);
 }

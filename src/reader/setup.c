@@ -55,5 +55,5 @@ void			*lm_init(int res, char *line)
 	main->waybox->first = NULL;
 	main->waybox->second = NULL;
 	main->copy_paths = NULL;
-	return(main);
+	return (main);
 }

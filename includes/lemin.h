@@ -128,7 +128,7 @@ int					lm_count(char **items);
 void				cleaner_2_array(char **array, int count);
 
 int					dijkstra(t_main *main);
-int					get_path(t_main *main);
+int					get_path(t_main *main, int i);
 void				reverse_link(t_node *node, t_link *link);
 void				clean_flags(t_main *main);
 void				split_path(t_main *main);
@@ -138,6 +138,10 @@ int					search_ways(t_main *main, t_graph *graph);
 void				free_way(t_way ***ways, int count);
 void        	    free_graph(t_graph *graph);
 void   				run_ants(t_main *main, int flag);
+void				swap_link(t_node *sch, t_node *needle,
+							t_node *swap, int f);
+int					is_set(t_main *main, t_link *link);
+int					min_int(int first, int second);
 
-void p(void); void	display_graph(t_graph	*graph);
+void	display_graph(t_graph	*graph);
 #endif
