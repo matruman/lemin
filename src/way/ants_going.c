@@ -79,12 +79,12 @@ void			run_ants(t_main *main, int flag)
 		count = main->waybox->s_count;
 	}
 	calc_ants(main, needle, count);
-	output_flush(main, 1);
+	//output_flush(main, 1);
 	main->output = output_init();
 	while (main->waybox->success != main->ants)
 	{
 		ants_exec(main, needle, count);
 		output_write(main, "", 1);
 	}
-	output_flush(main, 0);
+	//output_flush(main, 0);
 }

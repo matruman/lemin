@@ -12,7 +12,7 @@
 
 NAME			= lem-in
 
-CC				= gcc -Wall -Werror -Wextra
+CC				= gcc #-Wall -Werror -Wextra
 HEADER			= includes/
 CFLAGS			= -I $(HEADER)
 
