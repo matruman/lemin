@@ -58,3 +58,13 @@ void			set_result(t_way ***ways, int count,
 	main->waybox->f_count = count;
 	main->waybox->f_score = score;
 }
+
+int				counter(t_way **item)
+{
+	int		i;
+
+	i = 0;
+	while (item[i])
+		++i;
+	return (i);
+}

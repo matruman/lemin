@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			= lemin
+NAME			= lem-in
 
-CC				= gcc  -Wall -Werror -Wextra
+CC				= gcc -Wall -Werror -Wextra
 HEADER			= includes/
 CFLAGS			= -I $(HEADER)
 
@@ -33,6 +33,7 @@ SRC				= src/main.c \
 				  src/way/ants_going.c \
 				  src/way/helps.c \
 				  src/way/lm_itoa.c \
+				  src/way/calc.c \
 				  src/free.c \
 				  src/reader/output.c \
 				  gnl/get_next_line.c

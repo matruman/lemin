@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
+#include <ctype.h>
 
 void			die(void)
 {
@@ -18,10 +19,31 @@ void			die(void)
 	exit(1);
 }
 
-static	int		calc(t_main *main)
+static	int		calc(t_main *main, t_way ***ways, int count)
 {
-	return (((main->waybox->f_score - 1) *
-			(main->waybox->f_count - 1)) < main->ants);
+	int		*calc;
+	int		final;
+	int		tmp;
+	int		i;
+
+	if (!(calc = (int*)malloc(sizeof(void*) * count)))
+		die();
+	i = 0;
+	while (i < count)
+	{
+		calc[i] = counter(ways[i]);
+		++i;
+	}
+	i = 0;
+	final = 0;
+	tmp = calc[count - 1];
+	while (i < count - 1)
+	{
+		final += tmp - calc[i];
+		++i;
+	}
+	free(calc);
+	return (final >= main->ants ? 0 : 1);
 }
 
 static	void	common(t_main *main)
@@ -31,12 +53,14 @@ static	void	common(t_main *main)
 	while (dijkstra(main))
 	{
 		search_ways(main, merge_paths(main));
-		if (!calc(main))
+		if (!calc(main, main->waybox->first, main->waybox->f_count))
 		{
+			fprintf(fopen("testtest", "a"),"%s\n", "FIRST");
 			run_ants(main, 1);
 			return ;
 		}
 	}
+	fprintf(fopen("testtest", "a"),"%s\n", "LAST");
 	run_ants(main, 0);
 }
 

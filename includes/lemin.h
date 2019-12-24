@@ -16,7 +16,7 @@
 # define OUTPUT_LEN 80000
 
 # include "../gnl/get_next_line.h"
-
+#include <stdio.h>
 typedef struct		s_main
 {
 	int				ants;
@@ -93,6 +93,8 @@ typedef struct		s_waybox
 	t_node			*start;
 	int				passed;
 	int				success;
+	int				len;
+	int				*calc;
 }					t_waybox;
 
 typedef struct		s_way
@@ -161,6 +163,9 @@ void				mark(t_main *main, t_path *path,
 void				set_result(t_way ***ways, int count,
 							int score, t_main *main);
 int					ways_count(t_main *main, t_graph *graph);
+int					counter(t_way **item);
+
+void				calc_ants(t_main *main, t_way ***ways, int count);
 
 t_out				*output_init(void);
 void				output_write(t_main *main, char *str, int flag);

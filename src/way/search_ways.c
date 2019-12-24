@@ -30,7 +30,7 @@ static	t_node	*get_node(t_node *start)
 	return (NULL);
 }
 
-static	int		counter(t_main *main)
+static	int		scounter(t_main *main)
 {
 	t_node	*tmp;
 	int		count;
@@ -79,7 +79,7 @@ static	int		fnorm(t_way ***way, t_main *main)
 
 	j = 0;
 	final = 0;
-	while ((count = counter(main)))
+	while ((count = scounter(main)))
 	{
 		if (!(way[j] = (t_way**)malloc((1 + count) * sizeof(void*))))
 			die();
