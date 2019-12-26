@@ -32,6 +32,7 @@ SRC				= src/main.c \
 				  src/way/search_ways.c \
 				  src/way/ants_going.c \
 				  src/way/helps.c \
+				  src/way/sorting.c \
 				  src/way/lm_itoa.c \
 				  src/way/calc.c \
 				  src/free.c \

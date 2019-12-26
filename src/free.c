@@ -12,7 +12,7 @@
 
 #include "../includes/lemin.h"
 
-void			free_way(t_way ***ways, int count)
+void			free_way(t_way ***ways, int count, int *ways_counter)
 {
 	int		i;
 	int		j;
@@ -29,6 +29,7 @@ void			free_way(t_way ***ways, int count)
 		free(ways[i]);
 		++i;
 	}
+	free(ways_counter);
 	free(ways);
 }
 

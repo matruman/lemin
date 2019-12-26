@@ -40,21 +40,25 @@ int				ways_count(t_main *main, t_graph *graph)
 }
 
 void			set_result(t_way ***ways, int count,
-							int score, t_main *main)
+							int score, t_main *main, int *way_counter)
 {
 	if (!main->waybox->first)
 	{
 		main->waybox->first = ways;
 		main->waybox->f_count = count;
 		main->waybox->f_score = score;
+		main->waybox->count_first = way_counter;
 		return ;
 	}
 	if (main->waybox->second)
-		free_way(main->waybox->second, main->waybox->s_count);
+		free_way(main->waybox->second, main->waybox->s_count,
+					main->waybox->count_second);
+	main->waybox->count_second = main->waybox->count_first;
 	main->waybox->second = main->waybox->first;
 	main->waybox->s_count = main->waybox->f_count;
 	main->waybox->s_score = main->waybox->f_score;
 	main->waybox->first = ways;
+	main->waybox->count_first = way_counter;
 	main->waybox->f_count = count;
 	main->waybox->f_score = score;
 }

@@ -86,6 +86,8 @@ typedef struct		s_waybox
 {
 	struct s_way	***first;
 	struct s_way	***second;
+	int				*count_first;
+	int				*count_second;
 	int				f_score;
 	int				s_score;
 	int				f_count;
@@ -147,7 +149,7 @@ t_graph				*merge_paths(t_main *main);
 
 int					search_ways(t_main *main, t_graph *graph);
 
-void				free_way(t_way ***ways, int count);
+void				free_way(t_way ***ways, int count, int *ways_counter);
 void				free_graph(t_graph *graph);
 void				free_path(t_main *main);
 
@@ -161,16 +163,19 @@ t_node				*copy_node(t_node *node);
 void				mark(t_main *main, t_path *path,
 							t_paths *paths, t_link *link);
 void				set_result(t_way ***ways, int count,
-							int score, t_main *main);
+							int score, t_main *main, int *way_counter);
 int					ways_count(t_main *main, t_graph *graph);
 int					counter(t_way **item);
 
-void				calc_ants(t_main *main, t_way ***ways, int count);
+void				calc_ants(t_main *main, t_way ***ways,
+								int count, int *way_counter);
 
 t_out				*output_init(void);
 void				output_write(t_main *main, char *str, int flag);
 void				output_flush(t_main *main, int flag);
 void				lm_itoa(t_main *main, int n);
+
+void				sort_way(t_way ***way, int *ways_counter, int count);
 
 void				display_graph(t_graph	*graph);
 

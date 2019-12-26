@@ -43,7 +43,8 @@ static	void	ant_swap(t_main *main, t_way **items, int j, int i)
 	ant_print(main, items[j]->name, main->waybox->passed);
 }
 
-static	void	ants_exec(t_main *main, t_way ***items, int count)
+static	void	ants_exec(t_main *main, t_way ***items,
+							int count, int *way_counter)
 {
 	int		len;
 	int		i;
@@ -52,7 +53,7 @@ static	void	ants_exec(t_main *main, t_way ***items, int count)
 	i = 0;
 	while (i < count)
 	{
-		len = counter(items[i]);
+		len = way_counter[i];
 		main->waybox->len = len;
 		j = len;
 		while (j--)
@@ -69,22 +70,25 @@ static	void	ants_exec(t_main *main, t_way ***items, int count)
 void			run_ants(t_main *main, int flag)
 {
 	t_way	***needle;
+	int		*way_counter;
 	int		count;
 
 	needle = main->waybox->first;
+	way_counter = main->waybox->count_first;
 	count = main->waybox->f_count;
 	if (flag)
 	{
 		needle = main->waybox->second;
+		way_counter = main->waybox->count_second;
 		count = main->waybox->s_count;
 	}
-	calc_ants(main, needle, count);
-	//output_flush(main, 1);
+	calc_ants(main, needle, count, way_counter);
+	output_flush(main, 1);
 	main->output = output_init();
 	while (main->waybox->success != main->ants)
 	{
-		ants_exec(main, needle, count);
+		ants_exec(main, needle, count, way_counter);
 		output_write(main, "", 1);
 	}
-	//output_flush(main, 0);
+	output_flush(main, 0);
 }

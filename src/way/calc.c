@@ -61,7 +61,8 @@ static	void	calc_remove(int *calc, int difference, int count)
 		return (calc_remove(calc, difference, count));
 }
 
-void			calc_ants(t_main *main, t_way ***ways, int count)
+void			calc_ants(t_main *main, t_way ***ways,
+							int count, int *way_counter)
 {
 	int		*calc;
 	int		i;
@@ -71,26 +72,13 @@ void			calc_ants(t_main *main, t_way ***ways, int count)
 	i = 0;
 	while (i < count)
 	{
-		calc[i] = counter(ways[i]);
+		calc[i] = way_counter[i];
 		++i;
 	}
-	i = 0;
-	while (i < count)
-	{
-		printf("%d\n", calc[i]);
-		++i;
-	}
-	printf("\n\n");
 	i = calc_formula(calc, main->ants, calc[count - 1], count);
-	// if (i < main->ants)
-	// 	calc_add(calc, main->ants - i, count);
-	// if (main->ants < i)
-	// 	calc_remove(calc, i - main->ants, count);
-	// main->waybox->calc = calc;
-	i = 0;
-	while (i < count)
-	{
-		printf("%d\n", calc[i]);
-		++i;
-	}
+	if (i < main->ants)
+		calc_add(calc, main->ants - i, count);
+	if (main->ants < i)
+		calc_remove(calc, i - main->ants, count);
+	main->waybox->calc = calc;
 }

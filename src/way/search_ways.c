@@ -69,20 +69,19 @@ static	t_way	*get_struct(t_node **here)
 	return (NULL);
 }
 
-static	int		fnorm(t_way ***way, t_main *main)
+static	int		fnorm(t_way ***way, t_main *main, int *way_counter, int j)
 {
 	t_node	*tmp;
 	int		final;
 	int		count;
 	int		i;
-	int		j;
 
-	j = 0;
 	final = 0;
 	while ((count = scounter(main)))
 	{
 		if (!(way[j] = (t_way**)malloc((1 + count) * sizeof(void*))))
 			die();
+		way_counter[j] = count;
 		i = 0;
 		final = count > final ? count : final;
 		tmp = main->waybox->start;
@@ -92,18 +91,22 @@ static	int		fnorm(t_way ***way, t_main *main)
 		++j;
 	}
 	way[j] = NULL;
-	set_result(way, j, final, main);
+	set_result(way, j, final, main, way_counter);
+	sort_way(way, way_counter, j);
 	return (j);
 }
 
 int				search_ways(t_main *main, t_graph *graph)
 {
 	t_way	***way;
+	int		*way_counter;
 	int		ways_len;
 
 	if (!(ways_len = ways_count(main, graph)))
 		return (0);
 	if (!(way = (t_way***)malloc((1 + ways_len) * sizeof(void*))))
 		die();
-	return (fnorm(way, main));
+	if (!(way_counter = (int*)malloc(sizeof(int) * ways_len)))
+		die();
+	return (fnorm(way, main, way_counter, 0));
 }
