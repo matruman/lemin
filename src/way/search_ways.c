@@ -101,6 +101,7 @@ int				search_ways(t_main *main, t_graph *graph)
 	t_way	***way;
 	int		*way_counter;
 	int		ways_len;
+	int		result;
 
 	if (!(ways_len = ways_count(main, graph)))
 		return (0);
@@ -108,5 +109,7 @@ int				search_ways(t_main *main, t_graph *graph)
 		die();
 	if (!(way_counter = (int*)malloc(sizeof(int) * ways_len)))
 		die();
-	return (fnorm(way, main, way_counter, 0));
+	result = fnorm(way, main, way_counter, 0);
+	free_graph(graph);
+	return (result);
 }
