@@ -67,7 +67,7 @@ void			calc_ants(t_main *main, t_way ***ways,
 	int		*calc;
 	int		i;
 
-	if (!(calc = (int*)malloc(sizeof(void*) * count)))
+	if (!(calc = (int*)malloc(sizeof(int) * count)))//233232
 		die();
 	i = 0;
 	while (i < count)

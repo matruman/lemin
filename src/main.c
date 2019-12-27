@@ -33,7 +33,7 @@ static	int		calc(t_main *main, t_way ***ways,
 		final += tmp - way_counter[i];
 		++i;
 	}
-	return (final >= main->ants + 1 || count > main->ants ? 0 : 1);
+	return (final + 1 > main->ants || count > main->ants ? 1 : 0);
 }
 
 static	void	common(t_main *main)
@@ -43,7 +43,7 @@ static	void	common(t_main *main)
 	while (dijkstra(main))
 	{
 		search_ways(main, merge_paths(main));
-		if (!calc(main, main->waybox->first, main->waybox->f_count,
+		if (calc(main, main->waybox->first, main->waybox->f_count,
 					main->waybox->count_first))
 		{
 			run_ants(main, 1);
