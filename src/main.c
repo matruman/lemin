@@ -33,7 +33,7 @@ static	int		calc(t_main *main, t_way ***ways,
 		final += tmp - way_counter[i];
 		++i;
 	}
-	return (final >= main->ants + 1 ? 0 : 1);
+	return (final >= main->ants + 1 || count > main->ants ? 0 : 1);
 }
 
 static	void	common(t_main *main)

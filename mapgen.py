@@ -77,7 +77,7 @@ class Check:
         return 1
         
 
-checker = Check();
+checker = Check()
 if not checker.run():
     checker.help()
     exit()
