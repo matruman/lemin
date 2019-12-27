@@ -30,7 +30,8 @@ t_out			*output_init(void)
 
 	if (!(output = (t_out*)malloc(sizeof(t_out))))
 		die();
-	if (!(output->str = (char*)malloc((OUTPUT_LEN + 1) * sizeof(char))))
+	if (!(output->str = (char*)ft_memalloc((OUTPUT_LEN + 1)
+			* sizeof(char))))
 		die();
 	output->used = 0;
 	output->next = NULL;
@@ -80,7 +81,7 @@ void			output_flush(t_main *main, int flag)
 	while (output)
 	{
 		toutput = output->next;
-		ft_putstr(output->str);
+		write(1, output->str, output->used);
 		free(output->str);
 		free(output);
 		output = toutput;
