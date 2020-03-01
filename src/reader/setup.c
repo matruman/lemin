@@ -21,15 +21,21 @@ void			reader(t_main *main, char **line, int ch)
 	}
 	if (ft_strchr(*line, ' '))
 	{
-		reader_crtroom(main, ft_strsplit(*line, ' '), 0);
+		reader_crtroom(main, ft_strsplit(*line, ' '), 0, *line);
 		return ;
 	}
 	if (ft_strchr(*line, '-'))
 	{
-		reader_crtlink(main, ft_strsplit(*line, '-'));
+		reader_crtlink(main, ft_strsplit(*line, '-'), *line);
 		return ;
 	}
 	die();
+}
+
+void			*free_cost(void *p)
+{
+	free(p);
+	return (0);
 }
 
 void			*lm_init(int res, char *line)
@@ -39,7 +45,7 @@ void			*lm_init(int res, char *line)
 	if (res < 1 || !(main = (t_main*)malloc(sizeof(t_main))))
 		return (NULL);
 	if ((main->ants = die_atoi(line)) < 1)
-		return (NULL);
+		return (free_cost(main));
 	if (!(main->graph = (t_graph*)malloc(sizeof(t_graph))))
 		return (NULL);
 	if (!(main->waybox = (t_waybox*)malloc(sizeof(t_waybox))))

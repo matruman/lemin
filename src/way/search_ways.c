@@ -91,7 +91,8 @@ static	int		fnorm(t_way ***way, t_main *main, int *way_counter, int j)
 		++j;
 	}
 	way[j] = NULL;
-	set_result(way, j, final, main, way_counter);
+	main->waybox->tmp = final;
+	set_result(way, j, main, way_counter);
 	sort_way(way, way_counter, j);
 	return (j);
 }
@@ -110,6 +111,6 @@ int				search_ways(t_main *main, t_graph *graph)
 	if (!(way_counter = (int*)malloc(sizeof(int) * ways_len)))
 		die();
 	result = fnorm(way, main, way_counter, 0);
-	free_graph(graph);
+	free_graph(graph, 0);
 	return (result);
 }

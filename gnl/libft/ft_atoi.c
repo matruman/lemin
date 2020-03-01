@@ -3,35 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/08 18:02:15 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/08 18:02:17 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/13 20:28:54 by matruman          #+#    #+#             */
+/*   Updated: 2019/10/06 18:37:12 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int		ft_atoi(const char *str)
+static int		ft_atoi_fn(char c, int *sign)
 {
-	short	tmp;
-	size_t	num;
-
-	tmp = 1;
-	num = 0;
-	while (*str == '\n' || *str == '\t' || *str == '\v' ||
-						*str == ' ' || *str == '\f' || *str == '\r')
-		str++;
-	if ((str[0] == '-' && str[1] == '+') || (str[0] == '+' && str[1] == '-'))
-		return (0);
-	if (*str == '-')
+	if (c == '-')
 	{
-		tmp = -tmp;
-		str++;
+		*sign = 1;
+		return (1);
 	}
-	if (*str == '+')
-		str++;
-	while (*str >= '0' && *str <= '9')
-		num = (num * 10) + (long long int)(*str++ - '0');
-	return (num * tmp);
+	if (c == '+')
+		return (1);
+	return (0);
+}
+
+int				ft_atoi(const char *str)
+{
+	int		i;
+	int		j;
+	int		sign;
+	int		val;
+
+	i = 0;
+	while (str[i] == '\t' || str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	sign = -1;
+	if (ft_atoi_fn(str[i], &sign))
+		i++;
+	val = 0;
+	while (str[i] == '0')
+		i++;
+	j = i;
+	while (str[i] >= '0' && str[i] <= '9' && str[i])
+	{
+		if (i - j > 17)
+			return (sign < 0 ? -1 : 0);
+		val = val * 10 - str[i] + '0';
+		i++;
+	}
+	return (sign * val);
 }

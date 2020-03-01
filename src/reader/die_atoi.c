@@ -16,12 +16,14 @@ int				die_atoi(char *str)
 {
 	long long int	num;
 
+	if (ft_strlen(str) > 10)
+		die();
 	num = 0;
 	if (str[0] == '-' || str[1] == '+')
 		die();
 	while (*str >= '0' && *str <= '9')
 		num = (num * 10) + (*str++ - '0');
-	if (*str || MAXINT > MAXINT)
+	if (*str || num > MAXINT)
 		die();
 	return (num);
 }

@@ -14,12 +14,12 @@
 
 void			die(void)
 {
+	get_next_line(0, 0, 1);
 	ft_putstr("ERROR\n");
 	exit(1);
 }
 
-static	int		calc(t_main *main, t_way ***ways,
-						int count, int *way_counter)
+static	int		calc(t_main *main, int count, int *way_counter)
 {
 	int		final;
 	int		tmp;
@@ -39,12 +39,11 @@ static	int		calc(t_main *main, t_way ***ways,
 static	void	common(t_main *main)
 {
 	if (!dijkstra(main))
-		return (output_flush(main, 1));
+		die();
 	while (dijkstra(main))
 	{
 		search_ways(main, merge_paths(main));
-		if (calc(main, main->waybox->first, main->waybox->f_count,
-					main->waybox->count_first))
+		if (calc(main, main->waybox->f_count, main->waybox->count_first))
 		{
 			run_ants(main, 1);
 			return ;
@@ -61,11 +60,11 @@ int				main(void)
 
 	line = NULL;
 	ch = 0;
-	if (!(main = (t_main*)lm_init(get_next_line(ch, &line), line)))
+	if (!(main = (t_main*)lm_init(get_next_line(ch, &line, 0), line)))
 		die();
 	output_write(main, line, 1);
 	ft_memdel((void**)&line);
-	while (get_next_line(ch, &line) > 0)
+	while (get_next_line(ch, &line, 0) > 0)
 	{
 		if (!(line[0] == '#' && line[1] != '#'))
 			reader(main, &line, ch);

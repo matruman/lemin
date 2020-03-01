@@ -3,24 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/08 16:04:41 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/08 16:04:42 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/19 17:26:04 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/19 17:27:03 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 
 void	ft_putendl_fd(char const *s, int fd)
 {
-	int i;
-
-	if (!s)
-		return ;
-	i = 0;
-	while (s[i])
-		i++;
-	write(fd, s, i);
-	write(fd, "\n", 1);
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_free_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/19 17:24:24 by matruman          #+#    #+#             */
-/*   Updated: 2019/09/21 20:24:50 by matruman         ###   ########.fr       */
+/*   Created: 2020/02/11 12:56:47 by matruman          #+#    #+#             */
+/*   Updated: 2020/02/11 13:07:19 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "libft.h"
+#include <stdlib.h>
 
-void	ft_putstr_fd(char const *s, int fd)
+int		ft_free_list(t_list **list)
 {
-	int		i;
+	t_list	*clist;
+	t_list	*next;
 
-	if (s && fd > 0)
+	if (!list || !(*list))
+		return (1);
+	clist = *list;
+	while (clist)
 	{
-		i = 0;
-		while (s[i])
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
+		next = clist->next;
+		free(clist->content);
+		free(clist);
+		clist = next;
 	}
+	*list = NULL;
+	return (1);
 }

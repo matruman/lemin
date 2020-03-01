@@ -59,6 +59,7 @@ void			cp_paths(t_main *main)
 	t_paths	*c_paths;
 	t_path	*path;
 
+	main->copy_paths = NULL;
 	paths = main->paths;
 	while (paths)
 	{

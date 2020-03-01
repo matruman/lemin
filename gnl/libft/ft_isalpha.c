@@ -3,32 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 20:52:45 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/14 20:52:47 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/14 15:57:00 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/15 16:31:08 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-static	int		ft_isupper(int c)
+int		ft_isalpha(int c)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	return (0);
-}
+	unsigned char	ch;
 
-static	int		ft_islower(int c)
-{
-	if (c >= 'a' && c <= 'z')
+	if (c < 0 || c > 127)
+		return (0);
+	ch = (unsigned char)c;
+	if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
 		return (1);
-	return (0);
-}
-
-int				ft_isalpha(int c)
-{
-	if (ft_islower(c) || ft_isupper(c))
-		return (1);
-	return (0);
+	else
+		return (0);
 }

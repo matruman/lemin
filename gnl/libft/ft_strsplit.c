@@ -3,95 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 12:10:47 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/07 12:10:48 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/17 15:25:43 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/20 20:00:05 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-static	char	**ft_strsplit_array(char const *str, char c)
+static int		ft_strsplit_fn(char **arr, char const *s, char c, int i)
 {
-	int count;
-	int i;
+	int		k;
+	int		count;
 
 	count = 0;
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i] != '\0')
+	while (s[i])
 	{
-		if (str[i] != c)
+		if (s[i] != c)
 		{
-			while (str[i] != c && str[i] != '\0')
+			k = i;
+			while (s[i] != c && s[i])
 				i++;
+			arr[count] = (char *)malloc(i - k + 1);
+			if (arr[count])
+			{
+				ft_strncpy(arr[count], &s[k], (size_t)(i - k));
+				arr[count][i - k] = 0;
+			}
+			else
+				return (1);
 			count++;
-			continue ;
 		}
-		i++;
+		if (s[i])
+			i++;
 	}
-	if (!count)
-		return (NULL);
-	return ((char**)malloc(count * sizeof(char*) + 1));
+	return (0);
 }
 
-static	char	**ft_strsplit_fucking_norminette(void)
-{
-	char	**fuck_norminette;
-
-	fuck_norminette = (char**)malloc(sizeof(char));
-	if (fuck_norminette == NULL)
-		return (NULL);
-	*fuck_norminette = NULL;
-	return (fuck_norminette);
-}
-
-static	char	*ft_strsplit_fuck_norminette(char const *str,
-	int i, int z, char c)
-{
-	int		j;
-	char	*string;
-
-	if ((string = (char*)malloc((z - i) * sizeof(char) + 1)) == NULL)
-		return (NULL);
-	j = 0;
-	while (str[i] != c && str[i] != '\0')
-	{
-		string[j] = str[i];
-		i++;
-		j++;
-	}
-	string[j] = '\0';
-	return (string);
-}
-
-char			**ft_strsplit(char const *str, char c)
+static int		ft_count(char const *s, char c)
 {
 	int		i;
-	int		j;
-	int		k;
-	char	**array;
+	int		count;
 
-	if (!str || !c)
-		return (NULL);
 	i = 0;
-	k = 0;
-	if ((array = ft_strsplit_array(str, c)) == NULL)
-		return (ft_strsplit_fucking_norminette());
-	while (str[i] && (j = i) >= 0)
+	count = 0;
+	while (s[i])
 	{
-		if (str[i] != c)
-		{
-			while (str[j] != c && str[j] != '\0')
-				j++;
-			if ((array[k] = ft_strsplit_fuck_norminette(str, i, j, c)))
-				k++;
-			i = j - 1;
-		}
+		if (s[i] != c)
+			count++;
+		while (s[i] != c && s[i])
+			i++;
+		if (s[i])
+			i++;
+	}
+	return (count);
+}
+
+static void		ft_free_arr(char ***aarr)
+{
+	char	**arr;
+	int		i;
+
+	arr = *aarr;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
 		i++;
 	}
-	array[k] = NULL;
-	return (!str ? NULL : array);
+	free(*aarr);
+}
+
+char			**ft_strsplit(char const *s, char c)
+{
+	int		count;
+	char	**arr;
+
+	if (s)
+	{
+		count = ft_count(s, c);
+		arr = (char **)malloc((count + 1) * sizeof(char *));
+		if (arr)
+		{
+			if (ft_strsplit_fn(arr, s, c, 0))
+			{
+				ft_free_arr(&arr);
+				return (NULL);
+			}
+			arr[count] = NULL;
+		}
+	}
+	return (s ? arr : (char **)NULL);
 }

@@ -33,7 +33,7 @@ void			free_way(t_way ***ways, int count, int *ways_counter)
 	free(ways);
 }
 
-void			free_graph(t_graph *graph)
+void			free_graph(t_graph *graph, int flag)
 {
 	t_node	*node;
 	t_node	*tmpn;
@@ -52,20 +52,20 @@ void			free_graph(t_graph *graph)
 		}
 		free(node->linkbox);
 		tmpn = node->next;
+		if (flag && node->split != 'I')
+			free(node->name);
 		free(node);
 		node = tmpn;
 	}
 	free(graph);
 }
 
-void			free_path(t_main *main)
+void			free_path(t_paths *paths)
 {
-	t_paths	*paths;
 	t_paths	*tpaths;
 	t_path	*path;
 	t_path	*tpath;
 
-	paths = main->copy_paths;
 	while (paths)
 	{
 		path = paths->path;
@@ -79,5 +79,18 @@ void			free_path(t_main *main)
 		free(paths);
 		paths = tpaths;
 	}
-	main->copy_paths = NULL;
+}
+
+void			free_all(t_main *main)
+{
+	free_graph(main->graph, 1);
+	if (main->waybox->second)
+		free_way(main->waybox->second, main->waybox->s_count,
+					main->waybox->count_second);
+	free_way(main->waybox->first, main->waybox->f_count,
+				main->waybox->count_first);
+	free(main->waybox->calc);
+	free(main->waybox);
+	free_path(main->paths);
+	free(main);
 }

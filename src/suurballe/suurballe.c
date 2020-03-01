@@ -120,6 +120,6 @@ t_graph		*merge_paths(t_main *main)
 	}
 	linker(main->copy_paths, 0, 0, 0);
 	tracer(graph);
-	free_path(main);
+	free_path(main->copy_paths);
 	return (graph);
 }

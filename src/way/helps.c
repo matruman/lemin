@@ -40,8 +40,11 @@ int				ways_count(t_main *main, t_graph *graph)
 }
 
 void			set_result(t_way ***ways, int count,
-							int score, t_main *main, int *way_counter)
+							t_main *main, int *way_counter)
 {
+	int		score;
+
+	score = main->waybox->tmp;
 	if (!main->waybox->first)
 	{
 		main->waybox->first = ways;

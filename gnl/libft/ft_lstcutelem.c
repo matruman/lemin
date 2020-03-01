@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_lstcutelem.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/19 17:24:24 by matruman          #+#    #+#             */
-/*   Updated: 2019/09/21 20:24:50 by matruman         ###   ########.fr       */
+/*   Created: 2019/10/04 16:06:52 by matruman          #+#    #+#             */
+/*   Updated: 2019/10/05 13:28:15 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "libft.h"
+#include <stdlib.h>
 
-void	ft_putstr_fd(char const *s, int fd)
+void	ft_lstcutelem(t_list *list, t_list **first)
 {
-	int		i;
+	t_list	*prev;
+	t_list	*next;
 
-	if (s && fd > 0)
+	prev = *first;
+	next = list->next;
+	if (prev == list)
 	{
-		i = 0;
-		while (s[i])
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
+		free(list->content);
+		free(list);
+		*first = next;
+		return ;
 	}
+	while (prev->next != list)
+		prev = prev->next;
+	free(list->content);
+	free(list);
+	prev->next = next;
 }

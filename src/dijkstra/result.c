@@ -33,12 +33,12 @@ static	int		cl_memory(t_main *main)
 	path = main->paths->path;
 	while (path)
 	{
-		tmp = path;
-		path = path->next;
-		ft_memdel((void**)&path);
+		tmp = path->next;
+		free(path);
+		path = tmp;
 	}
 	temp = main->paths->next;
-	ft_memdel((void**)&main->paths);
+	free(main->paths);
 	main->paths = temp;
 	return (0);
 }

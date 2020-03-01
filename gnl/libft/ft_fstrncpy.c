@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_fstrncpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/19 17:24:24 by matruman          #+#    #+#             */
-/*   Updated: 2019/09/21 20:24:50 by matruman         ###   ########.fr       */
+/*   Created: 2019/11/29 15:55:12 by matruman          #+#    #+#             */
+/*   Updated: 2019/11/29 15:55:18 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "libft.h"
 
-void	ft_putstr_fd(char const *s, int fd)
+void	ft_fstrncpy(char *dst, const char *src, size_t len)
 {
-	int		i;
+	size_t		i;
+	long long	*lsrc;
+	long long	*ldst;
 
-	if (s && fd > 0)
+	i = 0;
+	lsrc = (long long *)src;
+	ldst = (long long *)dst;
+	while (i < len / sizeof(long long))
 	{
-		i = 0;
-		while (s[i])
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
+		ldst[i] = lsrc[i];
+		i++;
+	}
+	i = i * sizeof(long long);
+	while (i < len)
+	{
+		dst[i] = src[i];
+		i++;
 	}
 }

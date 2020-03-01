@@ -3,38 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 13:21:23 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/07 13:21:24 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/17 14:47:23 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/20 18:27:24 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strtrim(char const *s)
+static void		skip_blanks(int *i, int *j, char const *s)
+{
+	while (s[*i] == ' ' || s[*i] == '\t' || s[*i] == '\n')
+		(*i)++;
+	*j = *i;
+	while (s[*j + 1])
+		(*j)++;
+	while ((s[*j] == ' ' || s[*j] == '\t' || s[*j] == '\n') && *j)
+		(*j)--;
+}
+
+char			*ft_strtrim(char const *s)
 {
 	int		i;
-	int		len;
-	char	*str;
+	int		j;
+	int		k;
+	char	*res;
 
-	if (!s)
-		return (NULL);
-	len = ft_strlen(s);
-	while (s[len - 1] == ' ' || s[len - 1] == '\t' || s[len - 1] == '\n')
-		len--;
-	i = -1;
-	while (s[++i] == ' ' || s[i] == '\t' || s[i] == '\n')
-		len--;
-	if (len <= 0)
-		len = 0;
-	str = (char*)malloc(sizeof(char) * (len + 1));
-	if (str == NULL)
-		return (NULL);
-	s += i;
-	i = -1;
-	while (++i < len)
-		str[i] = *s++;
-	str[i] = '\0';
-	return (str);
+	i = 0;
+	if (s)
+	{
+		skip_blanks(&i, &j, s);
+		if (j > i)
+			res = (char *)malloc(j - i + 2);
+		else
+			res = (char *)malloc(1);
+		k = 0;
+		if (res)
+		{
+			while (i <= j)
+				res[k++] = s[i++];
+			res[k] = 0;
+		}
+	}
+	return (s ? res : (char *)NULL);
 }

@@ -5,12 +5,15 @@ class Map:
     height = 0
     width = 0
     step = 0
+    size = 0
     padding = 0
+    p = 2
     arr = []
 
     def __init__ (self, height, width, size):
         self.height = height
         self.width = width
+        self.size = size
         self.step = (int) ((size)/(height + 1 if height > width else width + 1))
         self.padding = self.step
 
@@ -29,20 +32,25 @@ class Map:
         for i in range(0, len(self.arr)):
             for j in range(0, len(self.arr[i])):
                 self.arr[i][j]['links'] = []
-                if i + 1 < len(self.arr) and random.randint(0, 3):
+                if i + 1 < len(self.arr) and random.randint(0, self.p):
                     self.arr[i][j]['links'].append(self.arr[i][j]['name'] + '-' + self.arr[i + 1][j]['name'])
-                if j + 1 < len(self.arr[i]) and random.randint(0, 3):
+                if j + 1 < len(self.arr[i]) and random.randint(0, self.p):
                     self.arr[i][j]['links'].append(self.arr[i][j]['name'] + '-' + self.arr[i][j + 1]['name'])
+                    if i - 1 >= 0 and random.randint(0, self.p):
+                        self.arr[i][j]['links'].append(self.arr[i][j]['name'] + '-' + self.arr[i - 1][j + 1]['name'])
+                    if i + 1 < len(self.arr) and random.randint(0, self.p):
+                        self.arr[i][j]['links'].append(self.arr[i][j]['name'] + '-' + self.arr[i + 1][j + 1]['name'])
 
     def print_ants(self, ants):
         print(str(ants))
 
     def print_room (self):
+        print(f'#wsize={self.size}')
         for i in self.arr:
             for room in i:
-                if room['name'] == self.arr[0][0]['name']:
+                if room['name'] == self.arr[3][3]['name']:
                     print('##start')
-                if room['name'] == self.arr[self.height - 1][self.width - 1]['name']:
+                if room['name'] == self.arr[self.height - 4][self.width - 4]['name']:
                     print('##end')
                 print(room['name'] +  " " + str(room['coordinate'][0]) + " " + str(room['coordinate'][1]))
 

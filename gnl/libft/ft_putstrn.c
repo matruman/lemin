@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putstrn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/19 17:24:24 by matruman          #+#    #+#             */
-/*   Updated: 2019/09/21 20:24:50 by matruman         ###   ########.fr       */
+/*   Created: 2019/11/29 17:36:13 by matruman          #+#    #+#             */
+/*   Updated: 2019/11/29 17:36:19 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "libft.h"
+#include <unistd.h>
 
-void	ft_putstr_fd(char const *s, int fd)
+size_t		ft_putstrn(const char *str, size_t n)
 {
-	int		i;
+	size_t	i;
+	size_t	len;
+	size_t	size;
 
-	if (s && fd > 0)
+	i = 0;
+	len = ft_strlen(str);
+	size = 16;
+	while (i < n / size && i < len / size)
 	{
-		i = 0;
-		while (s[i])
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
+		write(1, str + i * size, size);
+		i++;
 	}
+	i *= size;
+	while (i < n && i < len)
+	{
+		write(1, str + i, 1);
+		i++;
+	}
+	return (i);
 }

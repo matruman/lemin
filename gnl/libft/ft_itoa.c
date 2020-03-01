@@ -3,64 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 14:29:19 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/07 14:29:20 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/19 15:15:00 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/19 20:15:51 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
-static	char	*ft_itoa_costil(void)
+static void		ft_itoa_fn(char *str, int i, int n, int tmp)
 {
-	char *string;
-
-	if ((string = (char*)malloc(1 * sizeof(char) + 1)) == NULL)
-		return (NULL);
-	string[0] = '0';
-	string[1] = '\0';
-	return (string);
-}
-
-static	int		ft_itoa_fuck_norminette(long n)
-{
-	long	i;
-
-	i = 0;
-	if (n < 0)
-		i++;
-	while (n)
+	if (str)
 	{
-		n /= 10;
-		i++;
+		str[i] = 0;
+		i--;
+		while (i >= 0)
+		{
+			str[i] = '0' + tmp * (n % 10);
+			n /= 10;
+			i--;
+		}
+		if (tmp < 0)
+			str[0] = '-';
 	}
-	return (i);
 }
 
 char			*ft_itoa(int n)
 {
 	int		i;
-	char	*string;
-	long	zaebalo;
+	int		tmp;
+	char	*str;
 
-	if (n == 0)
-		return (ft_itoa_costil());
-	zaebalo = n;
-	i = ft_itoa_fuck_norminette(zaebalo);
-	if ((string = (char*)malloc(i * sizeof(char) + 1)) == NULL)
-		return (NULL);
-	if (zaebalo < 0)
+	tmp = n;
+	i = 0;
+	while (tmp || !i)
 	{
-		string[0] = '-';
-		zaebalo = -zaebalo;
+		tmp /= 10;
+		i++;
 	}
-	string[i--] = '\0';
-	while (zaebalo)
+	if (n < 0)
 	{
-		string[i] = zaebalo % 10 + 48;
-		i--;
-		zaebalo /= 10;
+		tmp = -1;
+		i++;
 	}
-	return (string);
+	else
+		tmp = 1;
+	str = (char *)malloc(i + 1);
+	ft_itoa_fn(str, i, n, tmp);
+	return (str);
 }

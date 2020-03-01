@@ -6,15 +6,15 @@
 #    By: sjamie <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/12 19:57:44 by sjamie            #+#    #+#              #
-#    Updated: 2019/11/12 19:57:45 by sjamie           ###   ########.fr        #
+#    Updated: 2020/01/26 16:37:05 by matruman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= lem-in
 
-CC				= gcc #-Wall -Werror -Wextra
+CC				= gcc
 HEADER			= includes/
-CFLAGS			= -I $(HEADER)
+CFLAGS			= -Wall -Werror -Wextra -I $(HEADER)
 
 SRC				= src/main.c \
 				  src/reader/setup.c \
@@ -39,12 +39,15 @@ SRC				= src/main.c \
 				  src/reader/output.c \
 				  gnl/get_next_line.c
 
+LIB = gnl/libft/libft.a
 OBJ = $(patsubst %.c,%.o,$(SRC))
 
-all: $(NAME)
+all: lib $(NAME)
 
-$(NAME): lib $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L gnl/libft/ -lft
+$(NAME): $(OBJ) $(LIB)
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) -L gnl/libft -lft
+
+$(LIB):
 
 lib:
 	make -C gnl/libft

@@ -78,9 +78,21 @@ static	void	node_search(t_main *main, char *str1, char *str2)
 	second->linkbox->count += 1;
 }
 
-void			reader_crtlink(t_main *main, char **items)
+void			reader_crtlink(t_main *main, char **items, char *line)
 {
+	int		i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
 	if (!items || lm_count(items) != 2)
+		die();
+	while (i < 2)
+	{
+		len += ft_strlen(items[i]);
+		++i;
+	}
+	if (ft_strlen(line) - len > 1)
 		die();
 	node_search(main, items[0], items[1]);
 	main->links += 2;

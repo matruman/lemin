@@ -3,86 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 19:42:42 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/27 19:42:44 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/30 15:36:10 by matruman          #+#    #+#             */
+/*   Updated: 2019/10/06 15:35:20 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static	char	*gnl_strjoin(char *s1, char const *s2, size_t all)
+static t_list	*ft_listnew(int fd)
 {
-	size_t	j;
-	size_t	k;
-	char	*string;
+	t_list	*list;
 
-	if (!s2)
+	list = (t_list *)malloc(sizeof(t_list));
+	if (!list)
 		return (NULL);
-	j = !s1 ? 0 : ft_strlen(s1);
-	if (!(string = (char*)malloc((j + all) + 1)))
+	list->content = (void *)ft_strnew(0);
+	list->next = NULL;
+	if (!(list->content))
+	{
+		free(list);
 		return (NULL);
-	k = 0;
-	if (j)
-		while (*s1)
-			string[k++] = *s1++;
-	while (*s2 && --all)
-		string[k++] = *s2++;
-	string[k] = '\0';
-	return (string);
+	}
+	list->content_size = fd;
+	return (list);
 }
 
-static	size_t	gnl_strsearch(char *str, char c)
+static int		get_fdlist(t_list **plist, int fd)
 {
-	size_t	i;
+	t_list	*list;
 
-	i = 0;
-	while (str[i++])
-		if (str[i - 1] == c)
-			return (i);
+	list = *plist;
+	while ((int)list->content_size != fd && list->next)
+		list = list->next;
+	if (!list->next && (int)list->content_size != fd)
+	{
+		list->next = ft_listnew(fd);
+		if (list->next)
+			list = list->next;
+		else
+			return (-1);
+	}
+	*plist = list;
 	return (0);
 }
 
-static	size_t	handler(char *str, char **line)
+static int		save_line(char *str, char **line)
 {
-	char	*new;
-	size_t	i;
-	size_t	flag;
+	char	*end;
 
-	flag = gnl_strsearch(str, '\n');
-	new = gnl_strjoin(*line, str, flag ? flag : ft_strlen(str) + 1);
-	ft_memdel((void**)line);
-	*line = new;
-	i = 0;
-	while (str[flag] && flag > 0)
-		str[i++] = str[flag++];
-	while (str[i])
-		str[i++] = '\0';
-	return (flag);
+	if ((end = ft_strchr(str, '\n')))
+	{
+		if (!(*line = ft_strnew((size_t)(end - str))))
+			return (1);
+		ft_strncpy(*line, str, (size_t)(end - str));
+		ft_memmove(str, end + 1, ft_strlen(str) - (size_t)(end - str));
+	}
+	else
+	{
+		if (!(*line = ft_strnew(ft_strlen(str) + 1)))
+			return (1);
+		ft_strcpy(*line, str);
+		ft_bzero(str, ft_strlen(str));
+	}
+	return (0);
 }
 
-int				get_next_line(const int fd, char **line)
+static int		gnl_fn(t_list *list, char **line, char *tmp, char *tmp1)
 {
-	static char	*arr[FD_MAX];
-	char		buf[BUFF_SIZE + 1];
-	char		*temp;
-	int			tmp;
+	int		count;
+	char	*str;
 
-	if (fd < 0 || !line || BUFF_SIZE <= 0 || (read(fd, buf, 0) < 0) ||
-		(!arr[fd] && !(arr[fd] = ft_strnew(0))))
-		return (-1);
-	*line = NULL;
-	if (arr[fd][0] && handler(arr[fd], line))
-		return (1);
-	while ((tmp = read(fd, buf, BUFF_SIZE)))
-	{
-		buf[tmp] = '\0';
-		temp = ft_strjoin(arr[fd], buf);
-		free(arr[fd]);
-		arr[fd] = temp;
-		if (handler(arr[fd], line))
+	str = (char *)(list->content);
+	if (ft_strchr(str, '\n'))
+		if (save_line(str, line) || 1)
 			return (1);
+	tmp = ft_strnew(BUFF_SIZE);
+	count = 0;
+	while (read((int)list->content_size, tmp, BUFF_SIZE))
+	{
+		count++;
+		if (!(tmp1 = ft_strjoin(str, tmp)))
+			return (-1);
+		ft_strdel(&str);
+		str = tmp1;
+		if (ft_strchr(tmp, '\n'))
+			break ;
+		ft_bzero(tmp, BUFF_SIZE);
 	}
-	return (*line ? 1 : 0);
+	save_line(str, line);
+	ft_strdel(&tmp);
+	list->content = (void *)str;
+	return (count || **line);
+}
+
+int				get_next_line(const int fd, char **line, int f)
+{
+	static t_list	*main_list = NULL;
+	t_list			*list;
+	int				ans;
+
+	if (fd < 0 || read(fd, &ans, 0) < 0 || (f && ft_free_list(&main_list)))
+		if ((line && !(*line = NULL)) || 1)
+			return (-1);
+	if (!main_list)
+		main_list = ft_listnew(fd);
+	list = main_list;
+	if (get_fdlist(&list, fd))
+		return (-1);
+	if ((ans = gnl_fn(list, line, NULL, NULL)) == 0)
+	{
+		ft_lstcutelem(list, &main_list);
+		ft_strdel(line);
+		*line = NULL;
+		return (0);
+	}
+	if (ans == -1 && !(*line = NULL))
+		return (-1);
+	return (1);
 }

@@ -15,8 +15,9 @@
 # define MAXINT 2147483647
 # define OUTPUT_LEN 80000
 
+# include "stdio.h"
 # include "../gnl/get_next_line.h"
-#include <stdio.h>
+
 typedef struct		s_main
 {
 	int				ants;
@@ -37,10 +38,10 @@ typedef struct		s_link
 	struct s_node	*old;
 	struct s_link	*relink;
 	int				llink;
-	int				none;
+	int				none : 2;
+	int				display : 2;
+	int				coming : 2;
 	int				used;
-	int				display;
-	int				coming;
 	struct s_node	*node;
 	struct s_link	*next;
 }					t_link;
@@ -58,9 +59,9 @@ typedef struct		s_node
 	int				x;
 	int				y;
 	int				distance;
-	int				is_known;
-	int				is_visit;
-	char			split;
+	int				is_known : 2;
+	int				is_visit : 2;
+	int				split : 8;
 	struct s_rel	*linkbox;
 	struct s_node	*next;
 	struct s_node	*copy;
@@ -96,6 +97,7 @@ typedef struct		s_waybox
 	int				passed;
 	int				success;
 	int				len;
+	int				tmp;
 	int				*calc;
 }					t_waybox;
 
@@ -133,8 +135,9 @@ void				die(void);
 
 void				reader(t_main *main, char **line, int ch);
 void				reader_words(t_main *main, char **line, int ch);
-void				reader_crtroom(t_main *main, char **items, char flag);
-void				reader_crtlink(t_main *main, char **items);
+void				reader_crtroom(t_main *main, char **items,
+									char flag, char *line);
+void				reader_crtlink(t_main *main, char **items, char *line);
 int					die_atoi(char *str);
 
 int					lm_count(char **items);
@@ -150,8 +153,9 @@ t_graph				*merge_paths(t_main *main);
 int					search_ways(t_main *main, t_graph *graph);
 
 void				free_way(t_way ***ways, int count, int *ways_counter);
-void				free_graph(t_graph *graph);
-void				free_path(t_main *main);
+void				free_graph(t_graph *graph, int flag);
+void				free_path(t_paths *paths);
+void				free_all(t_main *main);
 
 void				run_ants(t_main *main, int flag);
 void				swap_link(t_node *sch, t_node *needle,
@@ -163,12 +167,11 @@ t_node				*copy_node(t_node *node);
 void				mark(t_main *main, t_path *path,
 							t_paths *paths, t_link *link);
 void				set_result(t_way ***ways, int count,
-							int score, t_main *main, int *way_counter);
+							t_main *main, int *way_counter);
 int					ways_count(t_main *main, t_graph *graph);
 int					counter(t_way **item);
 
-void				calc_ants(t_main *main, t_way ***ways,
-								int count, int *way_counter);
+void				calc_ants(t_main *main, int count, int *way_counter);
 
 t_out				*output_init(void);
 void				output_write(t_main *main, char *str, int flag);

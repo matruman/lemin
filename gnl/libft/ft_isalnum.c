@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjamie <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: matruman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 20:53:47 by sjamie            #+#    #+#             */
-/*   Updated: 2019/09/14 20:53:49 by sjamie           ###   ########.fr       */
+/*   Created: 2019/09/14 16:56:56 by matruman          #+#    #+#             */
+/*   Updated: 2019/09/14 17:01:23 by matruman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@ int		ft_isalnum(int c)
 {
 	if (ft_isalpha(c) || ft_isdigit(c))
 		return (1);
-	return (0);
+	else
+		return (0);
 }

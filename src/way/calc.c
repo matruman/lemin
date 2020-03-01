@@ -61,13 +61,12 @@ static	void	calc_remove(int *calc, int difference, int count)
 		return (calc_remove(calc, difference, count));
 }
 
-void			calc_ants(t_main *main, t_way ***ways,
-							int count, int *way_counter)
+void			calc_ants(t_main *main, int count, int *way_counter)
 {
 	int		*calc;
 	int		i;
 
-	if (!(calc = (int*)malloc(sizeof(int) * count)))//233232
+	if (!(calc = (int*)malloc(sizeof(int) * count)))
 		die();
 	i = 0;
 	while (i < count)
